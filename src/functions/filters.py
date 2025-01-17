@@ -7,7 +7,7 @@ import numpy as np
 from src.utils.customErrorBox import CustomErrorBox
 
 class CustomFilters:
-    def __init__(self, frame, img_control, menubar):
+    def __init__(self, frame, img_control, menubar, custom_font, label_font, button_font, menu_font):
          
         self.root = frame
         self.image_control = img_control
@@ -16,7 +16,7 @@ class CustomFilters:
         
         #filter Menubar
         self.filter_menu = tk.Menu(menubar, tearoff=0)
-        self.filter_menu.configure(bg='#F6F4F0', font=tk.font.Font(size=12, family='Corbel'))
+        self.filter_menu.configure(bg='#F6F4F0', font=menu_font)
         menubar.add_cascade(label='Filters', menu=self.filter_menu)
         self.filter_menu.add_command(label='Gaussian', command=self.gaussian_filter)
         self.filter_menu.add_command(label='Median', command= self.median_filter)
@@ -30,10 +30,13 @@ class CustomFilters:
         self.filter_menu.add_command(label='Sharpen', command= self.sharpen_filter)
         
         #Font 
-        self.custom_font = tk.font.Font(size=10,weight=tk.font.BOLD, family='Comic Sans MS')
+        # self.custom_font = tk.font.Font(size=10,weight=tk.font.BOLD, family='Comic Sans MS')
+        self.custom_font = custom_font
+        self.label_font = label_font
+        self.button_font = button_font
         #self.label_font = tk.font.Font(weight=tk.font.BOLD, family="Helvetica")
-        self.label_font = tk.font.Font(family='Segoe UI')
-        self.button_font = tk.font.Font(family='Segoe UI Emoji')
+        # self.label_font = tk.font.Font(family='Segoe UI')
+        # self.button_font = tk.font.Font(family='Segoe UI Emoji')
     def sharpen_filter(self):
         def sharpen_image(image):
             image = np.mean(image, axis=2).astype(np.uint8)

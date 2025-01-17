@@ -1,10 +1,10 @@
 #File tasks . saving , opening
 import tkinter as tk
-from src.utils.constants import menu_bg, menu_font
+from src.utils.constants import menu_bg
 from src.functions.camera import Camera
 
 class File:
-    def __init__(self, top, bottom, image_control, menubar):
+    def __init__(self, top, bottom, image_control, menubar, menu_font):
         self.topFrame = top
         self.bottomFrame = bottom
         

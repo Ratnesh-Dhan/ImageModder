@@ -1,9 +1,9 @@
 from src.utils.utils import Utils
 import tkinter as tk
-from src.utils.constants import menu_bg, menu_font
+from src.utils.constants import menu_bg
 
 class Graphs:
-    def __init__(self, root, image_control, menubar):
+    def __init__(self, root, image_control, menubar, menu_font):
         self.root = root
         self.utils = Utils(self.root)
         

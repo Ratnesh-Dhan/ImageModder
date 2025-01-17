@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import imageio.v3 as imageio
-import numpy as np
 from src.utils.customErrorBox import CustomErrorBox
 
 class ImageControl:

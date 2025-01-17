@@ -9,7 +9,7 @@ from src.functions.file import File
 from src.functions.edit import Edit
 
 class App:
-    def __init__(self, root, menubar):
+    def __init__(self, root, menubar, custom_font, label_font, button_font, menu_font):
         self.root = root
         self.root.title("ImageModder")
         self.root.geometry("800x500")
@@ -31,10 +31,10 @@ class App:
         self.image_control = ImageControl(self.bottomFrame)
         
         #Chronological order
-        self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar)
-        self.edit_operation = Edit(self.topFrame, self.image_control, menubar)
-        self.custom_filters = CustomFilters(self.topFrame, self.image_control, menubar)
-        self.graphs = Graphs(self.topFrame, self.image_control, menubar)
+        self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
+        self.edit_operation = Edit(self.topFrame, self.image_control, menubar, menu_font)
+        self.custom_filters = CustomFilters(self.topFrame, self.image_control, menubar, custom_font, label_font, button_font, menu_font)
+        self.graphs = Graphs(self.topFrame, self.image_control, menubar, menu_font)
         
         
         #adding image select

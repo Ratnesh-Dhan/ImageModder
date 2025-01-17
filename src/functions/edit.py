@@ -1,11 +1,11 @@
 # zoom zoomout, redo undo
 import tkinter as tk
-from src.utils.constants import menu_bg, menu_font
+from src.utils.constants import menu_bg
 from src.utils.customErrorBox import CustomErrorBox
 import cv2
 
 class Edit:
-    def __init__(self, root, image_control, menubar):
+    def __init__(self, root, image_control, menubar, menu_font):
         self.root = root
         self.image_control = image_control
         self.message = CustomErrorBox(root)
