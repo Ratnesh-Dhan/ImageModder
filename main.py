@@ -3,7 +3,8 @@ from src.app import App
 from src.utils.constants import initialize_fonts
         
 if __name__ == "__main__":
-    root = tk.Toplevel()
+    # root = tk.Toplevel()
+    root = tk.Tk()
     
     icon = tk.PhotoImage(file = 'src/public/research.png')
     root.iconphoto(False, icon)
