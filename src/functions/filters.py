@@ -78,6 +78,16 @@ class CustomFilters:
             new_window = tk.Toplevel(self.root)
             new_window.title("Sharpen Filter")
             new_window.geometry("220x150")
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 220
+            window_height = 150
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
             ttk.Label(new_window, text="Sharpen", font=self.custom_font).pack()
             frame1 = tk.Frame(new_window, padx=10, pady=5 )
             frame1.pack()
@@ -132,7 +142,16 @@ class CustomFilters:
         if img is not None:
             new_window = tk.Toplevel(self.root)
             new_window.title("Prewitt Filter")
-            new_window.geometry("210x220")
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 210
+            window_height = 220
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
             ttk.Label(new_window, text="Prewitt Filter", font=self.custom_font).pack()
             frame1 = tk.Frame(new_window, padx=10, pady=5)
             frame1.pack()
@@ -201,7 +220,17 @@ class CustomFilters:
         if img is not None:
             new_window = tk.Toplevel(self.root)
             new_window.title("Sobel Filter")
-            new_window.geometry("210x220")
+
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 210
+            window_height = 220
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
             ttk.Label(new_window, text="Sobel Filter", font=self.custom_font).pack()
             frame1 = tk.Frame(new_window, padx=10, pady=5)
             frame1.pack()
@@ -232,18 +261,22 @@ class CustomFilters:
             entry2.grid(row=0, column=1)
             ttk.Button(new_window, text="Apply", command=apply_sobel_filter).pack( pady=10, ipadx=5, ipady=3)
         else:
-            self.custom_error.show("Error","Image not found")
+            self.custom_error.show("Caution","Image not found")
             
     def enhance_contrast(self):
         try:
             img = self.image_control.get_image()
-            p2, p98 = np.percentile(img, (2, 98))  # Get the 2nd and 98th percentiles
-            contrast_stretched = np.clip((img - p2) * (255 / (p98 - p2)), 0, 255)  # Stretch contrast
-            contrast_stretched = contrast_stretched.astype(np.uint8)
-            self.image_control.load_image(contrast_stretched)
-        except Exception as e:
+            if img is not None:
+                p2, p98 = np.percentile(img, (2, 98))  # Get the 2nd and 98th percentiles
+                contrast_stretched = np.clip((img - p2) * (255 / (p98 - p2)), 0, 255)  # Stretch contrast
+                contrast_stretched = contrast_stretched.astype(np.uint8)
+                self.image_control.load_image(contrast_stretched)
+            else:
+                raise TypeError("No image found.!")
+        except TypeError as e:
             self.custom_error.show("Caution", e)
-        
+        except Exception as e:
+            self.custom_error.show("Error", e)
     
     def laplace_filter(self):
         img = self.image_control.get_image()
@@ -280,7 +313,18 @@ class CustomFilters:
         if img is not None:
             new_window = tk.Toplevel(self.root)
             new_window.title("Laplace Filter")
-            new_window.geometry("210x180")
+            
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 210
+            window_height = 180
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+            
             ttk.Label(new_window, text="Laplace Filter", font=self.custom_font).pack()
             frame1 = tk.Frame(new_window, padx=10, pady=5)
             frame1.pack()
@@ -301,7 +345,7 @@ class CustomFilters:
             entry2.grid(row=0, column=1)
             ttk.Button(new_window, text="Apply", command=apply_laplace_filter).pack( pady=10, ipadx=5, ipady=3)
         else:
-            self.custom_error.show("Error","image not found")
+            self.custom_error.show("Error", "No image found.!")
         
     def median_filter(self):
         print("median called")
@@ -323,7 +367,17 @@ class CustomFilters:
                 
             new_window = tk.Toplevel(self.root)
             new_window.title("Median Filter")
-            new_window.geometry("200x130")
+            
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 200
+            window_height = 130
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
             
             label1 = ttk.Label(new_window, text="Median Filter", font=self.custom_font)
             label1.pack()
@@ -347,6 +401,7 @@ class CustomFilters:
             combo.pack()
             ttk.Button(new_window, text="Apply", command=apply_median_filter).pack( pady=10 , ipadx=5, ipady=3)
         else:
+            self.custom_error.show("Error", "No image found.!")
             print("Error: no image found.!")
         
     def gaussian_filter(self):
@@ -372,7 +427,18 @@ class CustomFilters:
                     print(ve)
             new_window = tk.Toplevel(self.root)
             new_window.title("Gaussian filter")
-            new_window.geometry("210x280")
+            
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 210
+            window_height = 280
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
             ttk.Label(new_window, text="Gaussian filter", font=self.custom_font).pack()
             frame1 = tk.Frame(new_window, padx=10, pady=5)
             frame1.pack()
@@ -415,7 +481,7 @@ class CustomFilters:
             
             ttk.Button(new_window, text="Apply", command=apply_gaussian_filter).pack( pady=10 , ipadx=5, ipady=3)
         else:
-            self.custom_error.show("Error", "This is to inform you that we are trying to make some adjustments in this box")
+            self.custom_error.show("Error", "No image found")
             print("Error: no image found..!")
             
     def average_filter(self):
@@ -431,7 +497,18 @@ class CustomFilters:
                     print(e)
             new_window = tk.Toplevel(self.root)
             new_window.title("Average Filter")
-            new_window.geometry("200x100")
+            
+            #CENTERING THE WINDOW
+            # Set the desired size of the window
+            window_width = 200
+            window_height = 100
+            
+            screen_width = new_window.winfo_screenwidth()
+            screen_height = new_window.winfo_screenheight()
+            x = (screen_width//2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+            
             label = ttk.Label(new_window, text="Average Filter", font=self.custom_font)
             label.pack()
             frame1 = tk.Frame(new_window, padx=5, pady=5)
@@ -441,6 +518,8 @@ class CustomFilters:
             entry1.insert(0, "3")
             entry1.pack(side=tk.RIGHT)
             ttk.Button(new_window, text="Apply", command=apply_average_filter).pack(side=tk.BOTTOM, pady=(0, 10))
+        else:
+            self.custom_error.show("Error", "No image found")
             
     def average_backup(self):
         img = []
