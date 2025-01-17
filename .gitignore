@@ -10,3 +10,8 @@
 # venv file
 /venv
 /.spyproject
+
+# Igonre cache files
+*.pyc
+*.pyo
+__pycache__/
