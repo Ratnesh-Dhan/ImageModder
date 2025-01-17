@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 import numpy as np
 from src.utils.customErrorBox import CustomErrorBox
+from src.utils.constants import menu_bg
 
 class CustomFilters:
     def __init__(self, frame, img_control, menubar, custom_font, label_font, button_font, menu_font):
@@ -16,7 +17,7 @@ class CustomFilters:
         
         #filter Menubar
         self.filter_menu = tk.Menu(menubar, tearoff=0)
-        self.filter_menu.configure(bg='#F6F4F0', font=menu_font)
+        self.filter_menu.configure(bg=menu_bg, font=menu_font)
         menubar.add_cascade(label='Filters', menu=self.filter_menu)
         self.filter_menu.add_command(label='Gaussian', command=self.gaussian_filter)
         self.filter_menu.add_command(label='Median', command= self.median_filter)
