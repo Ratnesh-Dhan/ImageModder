@@ -191,6 +191,7 @@ class ImageControl:
     
     def toggle_drag(self):
         self.drag = not self.drag
+        return self.drag
             
     def zoom_in(self, event=None):
         if self.image is not None:

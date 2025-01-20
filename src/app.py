@@ -7,7 +7,7 @@ from src.functions.filters import CustomFilters
 from src.functions.graphs import Graphs
 from src.functions.file import File
 from src.functions.edit import Edit
-# from PIL import Image, ImageTk
+from PIL import Image, ImageTk
 
 class App:
     def __init__(self, root, menubar, custom_font, label_font, button_font, menu_font):
@@ -45,22 +45,28 @@ class App:
         # self.image_viewer = ImageViewer()
         
         #button icons
-        # hand = Image.open("src/public/hand.png")
-        # grab = Image.open("src/public/hold.png")
-        # color = Image.open("src/public/color.jpg")
-        # hand = hand.resize((50, 20), Image.LANCZOS)
+        hand = Image.open("src/public/hand.png")
+        grab = Image.open("src/public/hold.png")
+        hand = hand.resize((30, 30), Image.LANCZOS)
+        grab = grab.resize((30, 30), Image.LANCZOS)
+        self.hand_image = ImageTk.PhotoImage(hand)
+        self.grab_image = ImageTk.PhotoImage(grab)
         # grab = grab.resize((10, 10), Image.LANCZOS)
-        hand_image = tk.PhotoImage("src/public/hand.png")
-        # hand_image = hand_image.subsample(3, 3)
 
         #square buttons
-        self.button_hand = ttk.Button(self.topFrame, image=hand_image, compound=tk.LEFT, command=self.image_control.toggle_drag)
-        self.button_grab = ttk.Button(self.topFrame, image=hand_image, compound=tk.LEFT, command=self.image_control.toggle_drag).grid(row=1, column=3, ipadx=0, ipady=10)
+        self.button_hand = ttk.Button(self.topFrame, image=self.hand_image, command=self.drag)
         self.button_hand.bind("<Button-1>", self.button_color)
-        self.button_hand.grid(row=1, column=0, ipadx=0, ipady=10)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
         
-        
+    def drag(self):
+        print("drag")
+        drag = self.image_control.toggle_drag()
+        if drag:
+            self.button_hand.config(image=self.grab_image)
+        else:
+            self.button_hand.config(image=self.hand_image)
+    
     def on_closing(self):
         self.root.destroy() 
         sys.exit("Quiting..")
