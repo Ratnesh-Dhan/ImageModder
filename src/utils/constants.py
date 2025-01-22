@@ -1,4 +1,5 @@
 from tkinter import font
+from PIL import Image, ImageTk
 
 def initialize_fonts():
     custom_font = font.Font(size=10,weight=font.BOLD, family='Comic Sans MS')
@@ -9,3 +10,4 @@ def initialize_fonts():
     return custom_font, label_font, button_font, menu_font
 
 menu_bg = '#F6F4F0'
+
