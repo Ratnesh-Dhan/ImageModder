@@ -26,18 +26,18 @@ class ImageControl:
         self.first = 0
         self.last = -1
         
-        # Image reference for draging Image
+        # # Image reference for draging Image
         self.image_id = None  # To keep track of the image on the canvas
         self.image_x = 0  # To track the x position of the image
         self.image_y = 0  # To track the y position of the image
-        self.dragging = False  # To track if the image is being dragged
-        self.last_x = 0  # Last x position of the mouse
-        self.last_y = 0  # Last y position of the mouse
+        # self.dragging = False  # To track if the image is being dragged
+        # self.last_x = 0  # Last x position of the mouse
+        # self.last_y = 0  # Last y position of the mouse
         
-        # Binding mouse event for draging the image
-        self.canvas.bind("<ButtonPress-1>", self.start_drag)
-        self.canvas.bind("<B1-Motion>", self.do_drag)
-        self.canvas.bind("<ButtonRelease-1>", self.stop_drag)
+        # # Binding mouse event for draging the image
+        # self.canvas.bind("<ButtonPress-1>", self.start_drag)
+        # self.canvas.bind("<B1-Motion>", self.do_drag)
+        # self.canvas.bind("<ButtonRelease-1>", self.stop_drag)
         
         # Binding mouse WHEEL for ZOOM in/out
         # For linux OS
@@ -81,28 +81,28 @@ class ImageControl:
         print(f"Instance id: {id(self.img_state[self.last])}")
 
     
-    def stop_drag(self, event):
-        if self.drag:
-            self.image_x = self.canvas.coords(self.image_id)[0]
-            self.image_y = self.canvas.coords(self.image_id)[1]
+    # def stop_drag(self, event):
+    #     if self.drag:
+    #         self.image_x = self.canvas.coords(self.image_id)[0]
+    #         self.image_y = self.canvas.coords(self.image_id)[1]
         
-    def start_drag(self, event):
-        if self.drag:
-            self.last_x = event.x
-            self.last_y = event.y
+    # def start_drag(self, event):
+    #     if self.drag:
+    #         self.last_x = event.x
+    #         self.last_y = event.y
             
-    def do_drag(self, event):
-        if self.drag:
-            try:
-                dx = event.x - self.last_x
-                dy = event.y - self.last_y
-                self.image_x = dx + self.image_x
-                self.iamge_y = dy + self.image_y
-                self.canvas.move(self.image_id, dx, dy)
-                self.last_x = event.x
-                self.last_y = event.y
-            except Exception as e:
-                print(f"something wrong with drag {e}")
+    # def do_drag(self, event):
+    #     if self.drag:
+    #         try:
+    #             dx = event.x - self.last_x
+    #             dy = event.y - self.last_y
+    #             self.image_x = dx + self.image_x
+    #             self.iamge_y = dy + self.image_y
+    #             self.canvas.move(self.image_id, dx, dy)
+    #             self.last_x = event.x
+    #             self.last_y = event.y
+    #         except Exception as e:
+    #             print(f"something wrong with drag {e}")
        
     
     def mouse_wheel(self, event):
@@ -161,7 +161,7 @@ class ImageControl:
             self.tk_image = ImageTk.PhotoImage(self.photo)
             #Display the image in the canvas
             self.canvas.image = self.tk_image
-            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.canvas.image)
+            self.image_id = self.canvas.create_image(self.image_x,self.image_y, anchor=tk.NW, image=self.canvas.image)
             
         except Exception as e:
             self.tk_image = None
@@ -244,3 +244,10 @@ class ImageControl:
         img = self.img_state[self.last]
         img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
         self.load_image(img)
+        
+    def xy(self):
+        return self.image_x, self.image_y
+    
+    def set_xy(self, x, y):
+        self.image_x = x
+        self.image_y = y
