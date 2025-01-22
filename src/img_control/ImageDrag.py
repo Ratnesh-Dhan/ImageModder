@@ -22,13 +22,17 @@ class ImageDrag:
         self.canvas.unbind("<ButtonRelease-1>")
     
     def start(self):
+
         self.drag = self.image_control.drag
         self.image_id = self.image_control.image_id
+        
         self.image_x, self.image_y = self.image_control.xy()
         # Binding mouse event for draging the image
         self.canvas.bind("<ButtonPress-1>", self.start_drag)
         self.canvas.bind("<B1-Motion>", self.do_drag)
         self.canvas.bind("<ButtonRelease-1>", self.stop_drag)
+
+            
     
     def stop_drag(self, event):
         if self.drag:

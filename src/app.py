@@ -4,6 +4,7 @@ from tkinter import ttk
 #from src.utils.image_utils import ImageViewer
 from src.img_control.ImageControl import ImageControl
 from src.img_control.ImageDrag import ImageDrag
+from src.img_control.ImageSelection import ImageSelection
 from src.functions.filters import CustomFilters
 from src.functions.graphs import Graphs
 from src.functions.file import File
@@ -32,6 +33,7 @@ class App:
         #Image-control for bottom frame
         self.image_control = ImageControl(self.bottomFrame)
         self.image_drag = ImageDrag(self.image_control)
+        self.image_selecton = ImageSelection(self.bottomFrame, self.image_control)
         
         #Chronological order
         self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
@@ -61,8 +63,8 @@ class App:
         self.button_hand.bind("<Button-1>", self.button_color)
         self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)  
         ttk.Button(self.topFrame, image=self.rotate_image, command=self.image_control.rotate).grid(row=1, column=1, ipadx=2, ipady=2)  
-        ttk.Button(self.topFrame, image=self.select_image, command=self.image_control.rotate).grid(row=1, column=2, ipadx=2, ipady=2)  
-        ttk.Button(self.topFrame, image=self.cut_image, command=self.image_control.rotate).grid(row=1, column=3, ipadx=2, ipady=2)  
+        ttk.Button(self.topFrame, image=self.select_image, command=self.image_selecton.start).grid(row=1, column=2, ipadx=2, ipady=2)  
+        ttk.Button(self.topFrame, image=self.cut_image, command=self.image_selecton.cut_image).grid(row=1, column=3, ipadx=2, ipady=2)  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         # ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
         

@@ -178,6 +178,8 @@ class ImageControl:
         
         if file_path:
             try:
+                self.image_x = 0
+                self.image_y = 0
                 self.last=-1
                 self.first=0
                 self.img_state[:] = [None] * len(self.img_state)
@@ -190,8 +192,15 @@ class ImageControl:
             print("no filePath for image")
     
     def toggle_drag(self):
-        self.drag = not self.drag
-        return self.drag
+        try:
+            if self.image_id is not None:
+                self.drag = not self.drag
+                return self.drag
+            else:
+                raise ValueError("ah.. I think you need to load an image first ;)")
+        except ValueError as e:
+            self.custom_error.show("Caution", e)
+            
             
     def zoom_in(self, event=None):
         if self.image is not None:
