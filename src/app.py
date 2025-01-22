@@ -47,17 +47,20 @@ class App:
         #button icons
         hand = Image.open("src/public/hand.png")
         grab = Image.open("src/public/hold.png")
+        rotate = Image.open("src/public/rotate.png")
         hand = hand.resize((30, 30), Image.LANCZOS)
         grab = grab.resize((30, 30), Image.LANCZOS)
+        rotate = rotate.resize((30, 30), Image.LANCZOS)
         self.hand_image = ImageTk.PhotoImage(hand)
         self.grab_image = ImageTk.PhotoImage(grab)
-        # grab = grab.resize((10, 10), Image.LANCZOS)
+        self.rotate_image = ImageTk.PhotoImage(rotate)
 
         #square buttons
         self.button_hand = ttk.Button(self.topFrame, image=self.hand_image, command=self.drag)
         self.button_hand.bind("<Button-1>", self.button_color)
-        self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
+        self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)  
+        ttk.Button(self.topFrame, image=self.rotate_image, command=self.image_control.rotate).grid(row=1, column=1, ipadx=2, ipady=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        # ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
         
     def drag(self):
         print("drag")

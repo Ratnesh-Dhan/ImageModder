@@ -1,5 +1,5 @@
 #image loading and zoom in zoom out
-
+import cv2
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
@@ -239,3 +239,8 @@ class ImageControl:
         except Exception as e:
             print(e)
             return False
+        
+    def rotate(self):
+        img = self.img_state[self.last]
+        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+        self.load_image(img)
