@@ -43,15 +43,18 @@ class ImageSelection:
         self.cut_coords = (self.start_x, self.start_y, end_x, end_y)
         
     def cut_image(self):
+        print("image actual 0,0:", self.image_control.image_x, self.image_control.image_y)
+        og_x = self.image_control.image_x
+        og_y = self.image_control.image_y
         try:
             if self.cut_coords:
                 start_x, start_y, end_x, end_y = self.cut_coords
                 # Ensure coordinates are within image bounds
-                start_x = max(0, min(start_x, self.image.shape[1]))
-                start_y = max(0, min(start_y, self.image.shape[0]))
-                end_x = max(0, min(end_x, self.image.shape[1]))
-                end_y = max(0, min(end_y, self.image.shape[0]))
-        
+                start_x = max(0, min(start_x, self.image.shape[1])) + og_x
+                start_y = max(0, min(start_y, self.image.shape[0])) + og_y
+                end_x = max(0, min(end_x, self.image.shape[1])) + og_x
+                end_y = max(0, min(end_y, self.image.shape[0])) + og_y
+                print("coords during cut: ", start_x, start_y)
                 # Crop the image
                 cropped_image = self.image[start_y:end_y, start_x:end_x]
                 self.image_control.load_image(cropped_image)  
