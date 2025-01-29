@@ -1,8 +1,10 @@
 #image loading and zoom in zoom out
 import cv2
 import tkinter as tk
+import numpy as np
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
 
@@ -205,18 +207,22 @@ class ImageControl:
     def zoom_in(self, event=None):
         if self.image is not None:
             self.photo = self.photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
-            self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            self.load_image(np.array(self.photo))
+            # pass
+            # print("pass")
+            # self.tk_image = ImageTk.PhotoImage(self.photo)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
         
     def zoom_out(self, event=None):
         if self.image is not None:
             self.photo = self.photo.resize((int(self.photo.width*0.8), int(self.photo.height*0.8)), Image.LANCZOS)
-            self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            self.load_image(np.array(self.photo))
+            # self.tk_image = ImageTk.PhotoImage(self.photo)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
     

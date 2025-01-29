@@ -15,7 +15,17 @@ class App:
     def __init__(self, root, menubar, custom_font, label_font, button_font, menu_font):
         self.root = root
         self.root.title("ImageModder")
-        self.root.geometry("800x500")
+        
+        width = root.winfo_width() + 800
+        height = root.winfo_height() + 500
+        
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        self.root.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
+        self.root.update_idletasks()
+        # self.root.geometry("800x500")
         self.root.config(bg="#79D7BE")
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         
