@@ -1,7 +1,7 @@
 #image loading and zoom in zoom out
 import cv2
 import tkinter as tk
-import numpy as np
+from threading import Timer
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import imageio as imageioFull
@@ -11,7 +11,7 @@ from src.utils.customErrorBox import CustomErrorBox
 class ImageControl:
     def __init__(self, root):
         self.root = root
-        
+        self.zoom_timer = None #  Timer for Debouncing zoom operation
         self.custom_error = CustomErrorBox(self.root)
         
         #creating canvas widget
@@ -32,6 +32,8 @@ class ImageControl:
         self.image_id = None  # To keep track of the image on the canvas
         self.image_x = 0  # To track the x position of the image
         self.image_y = 0  # To track the y position of the image
+        self.height_scale = 1
+        self.width_scale = 1
         # self.dragging = False  # To track if the image is being dragged
         # self.last_x = 0  # Last x position of the mouse
         # self.last_y = 0  # Last y position of the mouse
@@ -55,22 +57,16 @@ class ImageControl:
             self.custom_error.show("Caution", e)
         
     def undo(self):
-        print("undo")
         last = (self.last+(len(self.img_state)-1))%len(self.img_state)
         if self.img_state[last] is not None:
-            print("test 1")
             print(self.last-self.first)
             if self.last - self.first != 1:
-                print("test 2")
                 self.last = last
-                print("calling from undo")
                 self.load_image(None)
     
     def redo(self):
-        print("redo")
         last = (self.last+1)%len(self.img_state)
         if (last != self.first) and (self.img_state[last] is not None):
-            print("redo working")
             self.last = last
             self.load_image(None)
     
@@ -109,55 +105,57 @@ class ImageControl:
     
     def mouse_wheel(self, event):
         # respond to Linux or Windows wheel event
+        if self.zoom_timer is not None:
+            self.zoom_timer.cancel() #Cancel the previous timer
+
         if event.num == 5 or event.delta == -120:
-            self.zoom_out()
+            self.zoom_timer = Timer(0.1, self.zoom_out) #Delay for 100ms
+        elif event.num == 4 or event.delta == 120:
+            self.zoom_timer = Timer(0.1, self.zoom_in)
+        self.zoom_timer.start()
 
-        if event.num == 4 or event.delta == 120:
-            self.zoom_in()
-
-            
+    def add_img_on_queue(self, image):
+        # print("add img on queue")
+        # print(f"test is load_image: {id(image)}, last: {self.last}")
+        try:
+            size = len(self.img_state)
+            #if self.first - self.last == -(size-1) or self.first-self.last == 1:
+            if (self.last+1)%size == self.first:
+                self.last = (self.last+1)%size
+                self.first = (self.first+1)%size
+                self.img_state[self.last] = image
+            else:
+                # print(f"update after undo, new last: {(self.last+1)%size}")
+                self.last = (self.last+1)%size
+                self.img_state[self.last] = image
+                i = self.last
+                length = len(self.img_state)
+                while((i+1)%length != self.first):
+                    i = (i+1)%length
+                    self.img_state[i] = None
+                
+            #print(f"first :{self.first}, last :{self.last}")   
+                
+        except Exception as e:
+            print(f"error on circular queue :{e}")       
             
     def load_image(self, image):
         #self.image = image
-        self.canvas.pack(fill=tk.BOTH, expand=True)
-        def add_img_on_queue(image):
-            print("add img on queue")
-            print(f"test is load_image: {id(image)}, last: {self.last}")
-            try:
-                size = len(self.img_state)
-                #if self.first - self.last == -(size-1) or self.first-self.last == 1:
-                if (self.last+1)%size == self.first:
-                    print("we are working")
-                    self.last = (self.last+1)%size
-                    self.first = (self.first+1)%size
-                    self.img_state[self.last] = image
-                else:
-                    print(f"update after undo, new last: {(self.last+1)%size}")
-                    self.last = (self.last+1)%size
-                    self.img_state[self.last] = image
-                    i = self.last
-                    length = len(self.img_state)
-                    while((i+1)%length != self.first):
-                        print("while is runnin")
-                        i = (i+1)%length
-                        self.img_state[i] = None
-                    
-                #print(f"first :{self.first}, last :{self.last}")   
-                    
-            except Exception as e:
-                print(f"error on circular queue :{e}")
-            
+        self.canvas.pack(fill=tk.BOTH, expand=True)         
         try:
             if image is not None:
-                add_img_on_queue(image)
-               
+                self.add_img_on_queue(image)             
             elif self.img_state[self.last] is None:
                 #raise Exception("tk_image object is None")
                 raise TypeError("tk_image object is type None")
                 
             
             #self.photo = Image.fromarray(self.image)
-            self.photo = Image.fromarray(self.img_state[self.last])
+            photo = Image.fromarray(self.img_state[self.last])
+            if self.height_scale == 1:
+                self.photo = photo
+            else:
+                self.photo = photo.resize(int(photo.width*self.width_scale), int(photo.height*self.height_scale), Image.LANCZOS)
             # self.photo = Image.fromarray((self.img_state[self.last]).astype('uint8'))
             # self.photo = self.img_state[self.last]
             self.tk_image = ImageTk.PhotoImage(self.photo)
@@ -206,23 +204,26 @@ class ImageControl:
             
     def zoom_in(self, event=None):
         if self.image is not None:
-            self.photo = self.photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
-            self.load_image(np.array(self.photo))
-            # pass
-            # print("pass")
-            # self.tk_image = ImageTk.PhotoImage(self.photo)
-            # self.canvas.delete("all")
-            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            self.height_scale = self.height_scale * 1.2
+            self.width_scale = self.width_scale * 1.2
+            photo = Image.fromarray(self.img_state[self.last])
+            self.photo = photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
+            self.tk_image = ImageTk.PhotoImage(self.photo)
+            self.canvas.delete("all")
+            self.image_id = self.canvas.create_image(0,0 , anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
         
     def zoom_out(self, event=None):
         if self.image is not None:
-            self.photo = self.photo.resize((int(self.photo.width*0.8), int(self.photo.height*0.8)), Image.LANCZOS)
-            self.load_image(np.array(self.photo))
-            # self.tk_image = ImageTk.PhotoImage(self.photo)
-            # self.canvas.delete("all")
-            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            # self.photo = self.photo.resize((int(self.photo.width*0.8), int(self.photo.height*0.8)), Image.LANCZOS)
+            self.width_scale = self.width_scale * 0.8
+            self.height_scale = self.height_scale * 0.8
+            photo = Image.fromarray(self.img_state[self.last])
+            self.photo = photo.resize((int(self.photo.width*self.width_scale), int(self.photo.height*self.height_scale)), Image.LANCZOS)
+            self.tk_image = ImageTk.PhotoImage(self.photo)
+            self.canvas.delete("all")
+            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
     
