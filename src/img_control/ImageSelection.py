@@ -3,7 +3,8 @@ from src.utils.customErrorBox import CustomErrorBox
 
 class ImageSelection:
     def __init__(self,root, image_control):
-
+        self.height_scale, self.width_scale = image_control.get_scale()
+        print("this is scale from ImageSelection", self.height_scale, " : ", self.width_scale)
         self.image_control = image_control
         self.image = None
         self.start_x = None
@@ -55,10 +56,10 @@ class ImageSelection:
             if self.cut_coords:
                 start_x, start_y, end_x, end_y = self.cut_coords
                 # Ensure coordinates are within image bounds
-                start_x = max(0, min(start_x, self.image.shape[1])) + og_x
-                start_y = max(0, min(start_y, self.image.shape[0])) + og_y
-                end_x = max(0, min(end_x, self.image.shape[1])) + og_x
-                end_y = max(0, min(end_y, self.image.shape[0])) + og_y
+                start_x = int(max(0, min(start_x, self.image.shape[1])) + og_x)
+                start_y = int(max(0, min(start_y, self.image.shape[0])) + og_y)
+                end_y = int(max(0, min(end_y, self.image.shape[0])) + og_y)
+                end_x = int(max(0, min(end_x, self.image.shape[1])) + og_x)
                 # start_x = max(0, min(start_x, self.image.shape[1])) 
                 # start_y = max(0, min(start_y, self.image.shape[0])) 
                 # end_x = max(0, min(end_x, self.image.shape[1])) 
@@ -66,6 +67,7 @@ class ImageSelection:
                 print("coords during cut: ", start_x, start_y, end_x, end_y)
                 # Crop the image
                 cropped_image = self.image[start_y:end_y, start_x:end_x]
+                self.image_control.reset_scale()
                 self.image_control.load_image(cropped_image)  
                 self.canvas.delete(self.rect)
             else:

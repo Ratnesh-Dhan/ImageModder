@@ -155,7 +155,7 @@ class ImageControl:
             if self.height_scale == 1:
                 self.photo = photo
             else:
-                self.photo = photo.resize(int(photo.width*self.width_scale), int(photo.height*self.height_scale), Image.LANCZOS)
+                self.photo = photo.resize((int(photo.width*self.width_scale), int(photo.height*self.height_scale)), Image.LANCZOS)
             # self.photo = Image.fromarray((self.img_state[self.last]).astype('uint8'))
             # self.photo = self.img_state[self.last]
             self.tk_image = ImageTk.PhotoImage(self.photo)
@@ -211,8 +211,9 @@ class ImageControl:
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
             self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0 , anchor=tk.NW, image=self.tk_image)
+            self.canvas.itemconfig(self.image_id, image=self.tk_image)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0 , anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
         
@@ -224,8 +225,9 @@ class ImageControl:
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*self.width_scale), int(self.photo.height*self.height_scale)), Image.LANCZOS)
             self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            self.canvas.itemconfig(self.image_id, image=self.tk_image)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
     
@@ -269,3 +271,10 @@ class ImageControl:
     def set_xy(self, x, y):
         self.image_x = x
         self.image_y = y
+    
+    def get_scale(self):
+        return self.height_scale, self.width_scale
+    
+    def reset_scale(self):
+        self.height_scale = 1
+        self.width_scale = 1

@@ -5,7 +5,6 @@ from src.utils.constants import initialize_fonts
 if __name__ == "__main__":
     # root = tk.Toplevel()
     root = tk.Tk()
-    print("test")
     icon = tk.PhotoImage(file = 'src/public/research.png')
     root.iconphoto(False, icon)
     #print(tk.font.families())
