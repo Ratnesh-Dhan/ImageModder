@@ -90,13 +90,6 @@ class ImageSelection:
                     end_x = int((end_x/self.width_scale) - (og_x/self.width_scale))
                     end_y = int((end_y/self.height_scale) - (og_y/self.height_scale))
                 print("coords during cut: ", start_x, start_y, end_x, end_y)
-                #THIS IS TESTING
-                test_image = self.image
-                cv2.rectangle(test_image, (start_x, start_y), (end_x, end_y), (0, 0, 255) , 3)
-                cv2.imshow("happy", test_image)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
-                #/THIS IS TESTING
                 # Crop the image
                 cropped_image = self.image[start_y:end_y, start_x:end_x]
                 # self.image_control.reset_scale()
