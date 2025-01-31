@@ -6,6 +6,7 @@ from src.img_control.ImageControl import ImageControl
 from src.img_control.ImageDrag import ImageDrag
 from src.img_control.ImageSelection import ImageSelection
 from src.functions.filters import CustomFilters
+from src.utils.customErrorBox import CustomErrorBox
 from src.functions.graphs import Graphs
 from src.functions.file import File
 from src.functions.edit import Edit
@@ -15,10 +16,21 @@ class App:
     def __init__(self, root, menubar, custom_font, label_font, button_font, menu_font):
         self.root = root
         self.root.title("ImageModder")
-        self.root.geometry("800x500")
+        
+        width = root.winfo_width() + 800
+        height = root.winfo_height() + 500
+        
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        self.root.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
+        self.root.update_idletasks()
+        # self.root.geometry("800x500")
         self.root.config(bg="#79D7BE")
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         
+        self.drag = False
         
         self.style = ttk.Style(root)
         # self.style.configure('TButton', background="#F6F4F0", foreground="#2E5077", font=('Helvetica', 10, 'bold'))
@@ -31,9 +43,11 @@ class App:
         self.bottomFrame.pack(fill='both', expand=True)
         
         #Image-control for bottom frame
+        self.message = CustomErrorBox(self.root)
         self.image_control = ImageControl(self.bottomFrame)
         self.image_drag = ImageDrag(self.image_control)
-        self.image_selecton = ImageSelection(self.bottomFrame, self.image_control)
+        # self.image_selection = ImageSelection(self.bottomFrame, self.image_control)
+        self.image_selection = None
         
         #Chronological order
         self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
@@ -59,18 +73,41 @@ class App:
         self.cut_image = ImageTk.PhotoImage(cut)
 
         #square buttons
-        self.button_hand = ttk.Button(self.topFrame, image=self.hand_image, command=self.drag)
+        self.button_hand = ttk.Button(self.topFrame, image=self.hand_image, command=self.drag_function)
         self.button_hand.bind("<Button-1>", self.button_color)
         self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)  
         ttk.Button(self.topFrame, image=self.rotate_image, command=self.image_control.rotate).grid(row=1, column=1, ipadx=2, ipady=2)  
-        ttk.Button(self.topFrame, image=self.select_image, command=self.image_selecton.start).grid(row=1, column=2, ipadx=2, ipady=2)  
-        ttk.Button(self.topFrame, image=self.cut_image, command=self.image_selecton.cut_image).grid(row=1, column=3, ipadx=2, ipady=2)  
+        ttk.Button(self.topFrame, image=self.select_image, command=self.selection_start).grid(row=1, column=2, ipadx=2, ipady=2)  
+        ttk.Button(self.topFrame, image=self.cut_image, command=self.image_cut).grid(row=1, column=3, ipadx=2, ipady=2)  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         # ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
         
-    def drag(self):
-        drag = self.image_control.toggle_drag()
-        if drag:
+    def selection_start(self):
+        if self.drag:
+            self.image_control.toggle_drag()
+            self.button_hand.config(image=self.hand_image)
+            self.image_drag.stopu()
+        if self.image_selection is not None:
+            self.image_selection.clean_up()
+            del self.image_selection
+            self.image_selection = None
+        self.image_selection = ImageSelection(self.bottomFrame, self.image_control)
+        self.image_selection.start()
+        
+    def image_cut(self):
+        try:
+            self.image_selection.cut_image()
+        except Exception:
+            self.message.show("Caution", "Selection is required to cut image.")
+        
+    def drag_function(self):
+        if self.image_selection is not None:
+            print("delete image_selection instnce from drag_function")
+            self.image_selection.clean_up()
+            del self.image_selection
+            self.image_selection = None
+        self.drag = self.image_control.toggle_drag()
+        if self.drag:
             self.button_hand.config(image=self.grab_image)
             self.image_drag.start()    
         else:
