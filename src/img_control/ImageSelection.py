@@ -14,6 +14,9 @@ class ImageSelection:
         
         self.messagebox = CustomErrorBox(root)
     
+    def __del__(self):
+        print("WARNING : Selection instance has been desolved.")
+    
     def start(self):
         try:
             self.image = self.image_control.get_image()
