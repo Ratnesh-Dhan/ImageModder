@@ -4,7 +4,7 @@ import tkinter as tk
 from threading import Timer
 from tkinter import filedialog
 from PIL import Image, ImageTk
-import imageio as imageioFull
+# import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
 
@@ -115,17 +115,13 @@ class ImageControl:
         self.zoom_timer.start()
 
     def add_img_on_queue(self, image):
-        # print("add img on queue")
-        # print(f"test is load_image: {id(image)}, last: {self.last}")
         try:
             size = len(self.img_state)
-            #if self.first - self.last == -(size-1) or self.first-self.last == 1:
             if (self.last+1)%size == self.first:
                 self.last = (self.last+1)%size
                 self.first = (self.first+1)%size
                 self.img_state[self.last] = image
             else:
-                # print(f"update after undo, new last: {(self.last+1)%size}")
                 self.last = (self.last+1)%size
                 self.img_state[self.last] = image
                 i = self.last
@@ -140,7 +136,6 @@ class ImageControl:
             print(f"error on circular queue :{e}")       
             
     def load_image(self, image):
-        #self.image = image
         self.canvas.pack(fill=tk.BOTH, expand=True)         
         try:
             if image is not None:
@@ -155,7 +150,7 @@ class ImageControl:
             if self.height_scale == 1:
                 self.photo = photo
             else:
-                self.photo = photo.resize(int(photo.width*self.width_scale), int(photo.height*self.height_scale), Image.LANCZOS)
+                self.photo = photo.resize((int(photo.width*self.width_scale), int(photo.height*self.height_scale)), Image.LANCZOS)
             # self.photo = Image.fromarray((self.img_state[self.last]).astype('uint8'))
             # self.photo = self.img_state[self.last]
             self.tk_image = ImageTk.PhotoImage(self.photo)
@@ -178,6 +173,8 @@ class ImageControl:
         
         if file_path:
             try:
+                self.height_scale = 1
+                self.width_scale = 1
                 self.image_x = 0
                 self.image_y = 0
                 self.last=-1
@@ -209,8 +206,9 @@ class ImageControl:
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
             self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0 , anchor=tk.NW, image=self.tk_image)
+            self.canvas.itemconfig(self.image_id, image=self.tk_image)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0 , anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
         
@@ -222,8 +220,9 @@ class ImageControl:
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*self.width_scale), int(self.photo.height*self.height_scale)), Image.LANCZOS)
             self.tk_image = ImageTk.PhotoImage(self.photo)
-            self.canvas.delete("all")
-            self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
+            self.canvas.itemconfig(self.image_id, image=self.tk_image)
+            # self.canvas.delete("all")
+            # self.image_id = self.canvas.create_image(0,0, anchor=tk.NW, image=self.tk_image)
         else:
             print("no image to zoom")
     
@@ -232,7 +231,7 @@ class ImageControl:
     
     def save_image(self):
         try:
-            if self.img_state[self.last].any() == None:
+            if self.img_state[self.last] is None:
                 raise Exception("No image to save")
             else:
                 print("in save")
@@ -267,3 +266,10 @@ class ImageControl:
     def set_xy(self, x, y):
         self.image_x = x
         self.image_y = y
+    
+    def get_scale(self):
+        return self.height_scale, self.width_scale
+    
+    def reset_scale(self):
+        self.height_scale = 1
+        self.width_scale = 1

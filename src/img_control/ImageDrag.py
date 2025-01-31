@@ -36,9 +36,12 @@ class ImageDrag:
     
     def stop_drag(self, event):
         if self.drag:
-            self.image_x = self.canvas.coords(self.image_id)[0]
-            self.image_y = self.canvas.coords(self.image_id)[1]
-            self.image_control.set_xy(self.image_x, self.image_y)
+            try:
+                self.image_x = self.canvas.coords(self.image_id)[0]
+                self.image_y = self.canvas.coords(self.image_id)[1]
+                self.image_control.set_xy(self.image_x, self.image_y)
+            except Exception as e:
+                print("Error: ", e)
         
     def start_drag(self, event):
         if self.drag:
