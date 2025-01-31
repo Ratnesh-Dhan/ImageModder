@@ -115,17 +115,13 @@ class ImageControl:
         self.zoom_timer.start()
 
     def add_img_on_queue(self, image):
-        # print("add img on queue")
-        # print(f"test is load_image: {id(image)}, last: {self.last}")
         try:
             size = len(self.img_state)
-            #if self.first - self.last == -(size-1) or self.first-self.last == 1:
             if (self.last+1)%size == self.first:
                 self.last = (self.last+1)%size
                 self.first = (self.first+1)%size
                 self.img_state[self.last] = image
             else:
-                # print(f"update after undo, new last: {(self.last+1)%size}")
                 self.last = (self.last+1)%size
                 self.img_state[self.last] = image
                 i = self.last
@@ -140,7 +136,6 @@ class ImageControl:
             print(f"error on circular queue :{e}")       
             
     def load_image(self, image):
-        #self.image = image
         self.canvas.pack(fill=tk.BOTH, expand=True)         
         try:
             if image is not None:
