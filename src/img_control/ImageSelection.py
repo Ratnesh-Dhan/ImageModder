@@ -74,4 +74,10 @@ class ImageSelection:
             self.messagebox.show("Caution", e)
         except Exception as e:
             self.messagebox.show("Error", e)
+            
+    def clean_up(self):
+        print("shit cleaning")
+        if self.rect:
+            self.canvas.delete(self.rect)
+        
         

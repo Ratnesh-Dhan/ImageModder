@@ -46,8 +46,8 @@ class App:
         self.message = CustomErrorBox(self.root)
         self.image_control = ImageControl(self.bottomFrame)
         self.image_drag = ImageDrag(self.image_control)
-        # self.image_selecton = ImageSelection(self.bottomFrame, self.image_control)
-        self.image_selecton = None
+        # self.image_selection = ImageSelection(self.bottomFrame, self.image_control)
+        self.image_selection = None
         
         #Chronological order
         self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
@@ -87,19 +87,25 @@ class App:
             self.image_control.toggle_drag()
             self.button_hand.config(image=self.hand_image)
             self.image_drag.stopu()
-        if self.image_selecton is not None:
-            del self.image_selecton
-            self.image_selecton = None
-        self.image_selecton = ImageSelection(self.bottomFrame, self.image_control)
-        self.image_selecton.start()
+        if self.image_selection is not None:
+            self.image_selection.clean_up()
+            del self.image_selection
+            self.image_selection = None
+        self.image_selection = ImageSelection(self.bottomFrame, self.image_control)
+        self.image_selection.start()
         
     def image_cut(self):
         try:
-            self.image_selecton.cut_image()
+            self.image_selection.cut_image()
         except Exception:
             self.message.show("Caution", "Selection is required to cut image.")
         
     def drag_function(self):
+        if self.image_selection is not None:
+            print("delete image_selection instnce from drag_function")
+            self.image_selection.clean_up()
+            del self.image_selection
+            self.image_selection = None
         self.drag = self.image_control.toggle_drag()
         if self.drag:
             self.button_hand.config(image=self.grab_image)

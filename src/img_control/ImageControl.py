@@ -4,7 +4,7 @@ import tkinter as tk
 from threading import Timer
 from tkinter import filedialog
 from PIL import Image, ImageTk
-import imageio as imageioFull
+# import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
 
@@ -178,6 +178,8 @@ class ImageControl:
         
         if file_path:
             try:
+                self.height_scale = 1
+                self.width_scale = 1
                 self.image_x = 0
                 self.image_y = 0
                 self.last=-1
@@ -232,7 +234,7 @@ class ImageControl:
     
     def save_image(self):
         try:
-            if self.img_state[self.last].any() == None:
+            if self.img_state[self.last] is None:
                 raise Exception("No image to save")
             else:
                 print("in save")
