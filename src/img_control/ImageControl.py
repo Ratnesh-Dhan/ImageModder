@@ -12,6 +12,7 @@ class ImageControl:
     def __init__(self, root):
         self.root = root
         self.zoom_timer = None #  Timer for Debouncing zoom operation
+        self.last_wheel_time = 0  # Initialize the wheel time tracker
         self.custom_error = CustomErrorBox(self.root)
         
         #creating canvas widget
@@ -104,15 +105,27 @@ class ImageControl:
        
     
     def mouse_wheel(self, event):
+        current_time = event.time
+        if current_time - self.last_wheel_time < 200: # 100ms threshold
+            return
+        self.last_wheel_time = current_time
+        # print("scaling: ", self.height_scale)
         # respond to Linux or Windows wheel event
-        if self.zoom_timer is not None:
-            self.zoom_timer.cancel() #Cancel the previous timer
-
-        if event.num == 5 or event.delta == -120:
-            self.zoom_timer = Timer(0.1, self.zoom_out) #Delay for 100ms
-        elif event.num == 4 or event.delta == 120:
-            self.zoom_timer = Timer(0.1, self.zoom_in)
-        self.zoom_timer.start()
+        try:
+            if self.zoom_timer is not None:
+                self.zoom_timer.cancel() #Cancel the previous timer
+    
+            if event.num == 5 or event.delta == -120:
+                self.zoom_timer = Timer(0.1, self.zoom_out) #Delay for 100ms
+            elif event.num == 4 or event.delta == 120:
+                self.zoom_timer = Timer(0.1, self.zoom_in)
+            self.zoom_timer.start()
+        except RuntimeError:
+            # Cancel all active timers
+            if hasattr(self, 'zoom_timer') and self.zoom_timer is not None:
+                self.zoom_timer.cancel()
+        except Exception as e:
+            self.custom_error.show("Error", e)
 
     def add_img_on_queue(self, image):
         try:
@@ -201,10 +214,13 @@ class ImageControl:
             
     def zoom_in(self, event=None):
         if self.image is not None:
-            self.height_scale = self.height_scale * 1.2
-            self.width_scale = self.width_scale * 1.2
+            if self.height_scale > 8:
+                return
+            self.height_scale = round(self.height_scale * 1.2, 2)
+            self.width_scale = round(self.width_scale * 1.2, 2)
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*1.2), int(self.photo.height*1.2)), Image.LANCZOS)
+            del self.tk_image # deleting old image object to free up space
             self.tk_image = ImageTk.PhotoImage(self.photo)
             self.canvas.itemconfig(self.image_id, image=self.tk_image)
             # self.canvas.delete("all")
@@ -215,8 +231,8 @@ class ImageControl:
     def zoom_out(self, event=None):
         if self.image is not None:
             # self.photo = self.photo.resize((int(self.photo.width*0.8), int(self.photo.height*0.8)), Image.LANCZOS)
-            self.width_scale = self.width_scale * 0.8
-            self.height_scale = self.height_scale * 0.8
+            self.width_scale = round(self.width_scale * 0.8, 2)
+            self.height_scale = round(self.height_scale * 0.8, 2)
             photo = Image.fromarray(self.img_state[self.last])
             self.photo = photo.resize((int(self.photo.width*self.width_scale), int(self.photo.height*self.height_scale)), Image.LANCZOS)
             self.tk_image = ImageTk.PhotoImage(self.photo)
