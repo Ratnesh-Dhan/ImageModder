@@ -1,18 +1,20 @@
-# class handling image drag with hand icon
-
 class ImageDrag:
     def __init__(self, image_control):
         self.image_control = image_control
         self.canvas = image_control.canvas
         self.drag = None
-        
-        # Image reference for draging Image
         self.image_id = None
-        self.image_x = 0  # To track the x position of the image
-        self.image_y = 0  # To track the y position of the image
-        self.dragging = False  # To track if the image is being dragged
-        self.last_x = 0  # Last x position of the mouse
-        self.last_y = 0  # Last y position of the mouse
+        self.image_x = 0
+        self.image_y = 0
+        self.dragging = False
+        self.last_x = 0
+        self.last_y = 0
+        
+        # Add boundaries for dragging
+        self.MIN_X = -1000  # Adjust these values based on your needs
+        self.MAX_X = 1000
+        self.MIN_Y = -1000
+        self.MAX_Y = 1000
     
     def stopu(self): 
         self.drag = None
@@ -22,41 +24,59 @@ class ImageDrag:
         self.canvas.unbind("<ButtonRelease-1>")
     
     def start(self):
-
         self.drag = self.image_control.drag
         self.image_id = self.image_control.image_id
-        
         self.image_x, self.image_y = self.image_control.xy()
-        # Binding mouse event for draging the image
+        
         self.canvas.bind("<ButtonPress-1>", self.start_drag)
         self.canvas.bind("<B1-Motion>", self.do_drag)
         self.canvas.bind("<ButtonRelease-1>", self.stop_drag)
-
-            
     
     def stop_drag(self, event):
         if self.drag:
             try:
-                self.image_x = self.canvas.coords(self.image_id)[0]
-                self.image_y = self.canvas.coords(self.image_id)[1]
-                self.image_control.set_xy(self.image_x, self.image_y)
+                coords = self.canvas.coords(self.image_id)
+                if coords:  # Check if coords exists
+                    self.image_x = coords[0]
+                    self.image_y = coords[1]
+                    self.image_control.set_xy(self.image_x, self.image_y)
             except Exception as e:
-                print("Error: ", e)
+                print(f"Error in stop_drag: {e}")
         
     def start_drag(self, event):
         if self.drag:
             self.last_x = event.x
             self.last_y = event.y
+            self.dragging = True
             
     def do_drag(self, event):
-        if self.drag:
+        if self.drag and self.dragging:
             try:
+                # Calculate movement
                 dx = event.x - self.last_x
                 dy = event.y - self.last_y
-                self.image_x = dx + self.image_x
-                self.iamge_y = dy + self.image_y
-                self.canvas.move(self.image_id, dx, dy)
+                
+                # Calculate new position
+                new_x = self.image_x + dx
+                new_y = self.image_y + dy
+                
+                # Apply boundaries
+                new_x = max(self.MIN_X, min(self.MAX_X, new_x))
+                new_y = max(self.MIN_Y, min(self.MAX_Y, new_y))
+                
+                # Calculate actual movement after boundaries
+                actual_dx = new_x - self.image_x
+                actual_dy = new_y - self.image_y
+                
+                # Update position
+                self.image_x = new_x
+                self.image_y = new_y
+                self.canvas.move(self.image_id, actual_dx, actual_dy)
+                
+                # Update last position
                 self.last_x = event.x
                 self.last_y = event.y
+                
             except Exception as e:
-                print(f"something wrong with drag {e}")
+                print(f"Error in do_drag: {e}")
+                self.dragging = False
