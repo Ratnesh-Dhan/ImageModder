@@ -190,7 +190,6 @@ class ImageSelection:
             if not self.cut_coords:
                 raise ValueError("No selection found. Please select an area before cutting.")
                 
-<<<<<<< HEAD
             if self.image is None:
                 raise ValueError("No image loaded.")
             
@@ -237,37 +236,6 @@ class ImageSelection:
             self.canvas.delete(self.rect)
             self.cut_coords = None
             
-=======
-                # start_x = max(0, min(start_x, og_x)) 
-                # start_y = max(0, min(start_y, og_y)) 
-                # end_x = max(0, min(end_x, og_x)) 
-                # end_y = max(0, min(end_y, og_y)) 
-                print(self.height_scale)
-                if self.height_scale < 1:
-                    print("negetive scaling is working")
-                    og_scale = negetive_scaling(self.height_scale)
-                    # start_x = int(og_scale*(start_x/self.width_scale) - og_scale*(og_x/self.width_scale))
-                    # start_y = int(og_scale*(start_y/self.height_scale) - og_scale*(og_y/self.height_scale))
-                    # end_x = int(og_scale*(end_x/self.width_scale) - og_scale*(og_x/self.width_scale))
-                    # end_y = int(og_scale*(end_y/self.height_scale) - og_scale*(og_y/self.height_scale))
-                    start_x = int(og_scale*(start_x/self.width_scale))
-                    start_y = int(og_scale*(start_y/self.height_scale))
-                    end_x = int(og_scale*(end_x/self.width_scale) - og_scale*(og_x/self.width_scale))
-                    end_y = int(og_scale*(end_y/self.height_scale) - og_scale*(og_y/self.height_scale))
-                else:
-                    start_x = int((start_x/self.width_scale) - (og_x/self.width_scale))
-                    start_y = int((start_y/self.height_scale) - (og_y/self.height_scale))
-                    end_x = int((end_x/self.width_scale) - (og_x/self.width_scale))
-                    end_y = int((end_y/self.height_scale) - (og_y/self.height_scale))
-                print("coords during cut: ", start_x, start_y, end_x, end_y)
-                # Crop the image
-                cropped_image = self.image[start_y:end_y, start_x:end_x]
-                # self.image_control.reset_scale()
-                self.image_control.load_image(cropped_image)  
-                self.canvas.delete(self.rect)
-            else:
-                raise ValueError("No selection found. please select area before Cut function.")
->>>>>>> 1c74bdc2f4e7734bf8890101f9dad57cf083da6f
         except ValueError as e:
             self.messagebox.show("Caution", str(e))
         except Exception as e:
