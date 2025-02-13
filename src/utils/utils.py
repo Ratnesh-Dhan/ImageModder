@@ -12,15 +12,15 @@ class Utils:
         except AttributeError as e:
             self.message.show("Error", e)
 
-    def matplotlib_show(sel, img):
+    def matplotlib_show(self, img):
         try:
             plt.title('By Matplotlib')
             plt.imshow(img)
             plt.axis('off')
             plt.show()
         except Exception as e:
+            self.message.show("error", e)
             print(e)
-            self.message.show("Error", e)
             
     def rgb_channel(self, img, val):
         try:
