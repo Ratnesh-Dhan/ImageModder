@@ -7,6 +7,8 @@ from PIL import Image, ImageTk
 # import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
+import pandas as pd
+import numpy as np
 
 class ImageControl:
     def __init__(self, root):
@@ -177,6 +179,31 @@ class ImageControl:
             #print(f"something went wrong {e}")
             self.custom_error.show("Error", f"Error in loading image: {e}")
     
+    def open_excel(self):
+        try:
+            file_path = filedialog.askopenfilename(title="Select an Excel file", filetypes=[("Excel files", "*.xlsx;*.xls")])
+        except Exception as e:
+             print(f"Error on file path {e}")
+             file_path = None
+        if file_path:
+            try:
+                self.height_scale = 1
+                self.width_scale = 1
+                self.image_x = 0
+                self.image_y = 0
+                self.last=-1
+                self.first=0
+                self.img_state[:] = [None] * len(self.img_state)
+                df = pd.read_excel(file_path, header=None) 
+                pixel_array = df.to_numpy()
+                pixel_array = pixel_array.astype(np.uint8)
+                self.load_image(pixel_array)
+            except Exception as e:
+                self.custom_error.show("Error", f"faild to open excel: {e}")
+                print(e)
+        else:
+            print("no filePath for excel")
+
     def on_image(self):
         try:
             file_path = filedialog.askopenfilename(title="select an image", filetypes=[("image", "*.png;*.jpg;*.bmp;*.jpeg")])

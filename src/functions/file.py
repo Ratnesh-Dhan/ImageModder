@@ -16,6 +16,8 @@ class File:
         self.file_menu.configure(bg=menu_bg, font=menu_font)
         menubar.add_cascade(label="File", menu=self.file_menu)
         self.file_menu.add_command(label="Open image", command=self.open_image)
+        self.file_menu.add_command(label="this is test", command=lambda: print("hello world"))
+        self.file_menu.add_command(label="Open excel file as image", command=self.open_excel)
         self.file_menu.add_command(label="Save image", command=self.image_control.save_image)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Video camera", command=self.camera_options)
@@ -30,4 +32,11 @@ class File:
             del self.camera
         self.camera = None
         self.image_control.on_image()
+
+    def open_excel(self):
+        if self.camera is not None:
+            self.camera.hide_widget()
+            del self.camera
+        self.camera = None
+        self.image_control.open_excel()
         
