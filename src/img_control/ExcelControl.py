@@ -26,7 +26,6 @@ class ExcelControl:
 
     def add_value_to_pixels(self, value: int, pixel_value: float):
         try:
-            return False
             pixel_array = self.image_control.get_image()
             pixel_array[pixel_array >= pixel_value] += value
             self.image_control.load_image(pixel_array)

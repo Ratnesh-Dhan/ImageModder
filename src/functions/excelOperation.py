@@ -85,6 +85,7 @@ class ExcelOperation:
                 except ValueError:
                     raise ValueError("Entry 2 must be an integer.")
                 bool = self.excel_control.add_value_to_pixels(value, pixel_value)
+                new_window.destroy()
                 if bool:
                     self.message.show("Success", "Adjustment successful! 🎉")
                 else:
