@@ -10,6 +10,7 @@ class Graphs:
         self.graph_menu = tk.Menu(menubar, tearoff=0)
         self.graph_menu.configure(bg=menu_bg, font=menu_font)
         menubar.add_cascade(label="Show", menu=self.graph_menu)
+        # self.graph_menu.add_command(label="Matplotlib show", command=lambda: self.utils.matplotlib_show(image_control.get_image()))
         self.graph_menu.add_command(label='Red Channel', command=lambda: self.utils.rgb_channel(image_control.get_image(), "Red"))
         self.graph_menu.add_command(label='Green Channel', command=lambda: self.utils.rgb_channel(image_control.get_image(), "Green"))
         self.graph_menu.add_command(label='Blue Channel', command=lambda: self.utils.rgb_channel(image_control.get_image(), "Blue"))

@@ -10,6 +10,7 @@ from src.utils.customErrorBox import CustomErrorBox
 from src.functions.graphs import Graphs
 from src.functions.file import File
 from src.functions.edit import Edit
+from src.functions.excelOperation import ExcelOperation
 from PIL import Image, ImageTk
 
 class App:
@@ -54,6 +55,7 @@ class App:
         self.edit_operation = Edit(self.topFrame, self.image_control, menubar, menu_font)
         self.custom_filters = CustomFilters(self.topFrame, self.image_control, menubar, custom_font, label_font, button_font, menu_font)
         self.graphs = Graphs(self.topFrame, self.image_control, menubar, menu_font)
+        self.excel = ExcelOperation(self.topFrame, menubar, menu_font,custom_font,label_font, self.image_control)
         
         #button icons
         hand = Image.open("src/public/hand.png")
