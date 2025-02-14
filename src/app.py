@@ -55,7 +55,7 @@ class App:
         self.edit_operation = Edit(self.topFrame, self.image_control, menubar, menu_font)
         self.custom_filters = CustomFilters(self.topFrame, self.image_control, menubar, custom_font, label_font, button_font, menu_font)
         self.graphs = Graphs(self.topFrame, self.image_control, menubar, menu_font)
-        self.excel = ExcelOperation(self.topFrame, menubar, menu_font,custom_font, self.image_control)
+        self.excel = ExcelOperation(self.topFrame, menubar, menu_font,custom_font,label_font, self.image_control)
         
         #button icons
         hand = Image.open("src/public/hand.png")
