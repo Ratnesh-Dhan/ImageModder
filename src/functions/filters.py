@@ -358,8 +358,9 @@ class CustomFilters:
                     if size <= 0:
                         label1.config(text="size must be a positive integer")
                     else:
-                          img_copy = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                          new_image = ndimage.median_filter(img_copy, size=size, mode=mode)
+                        # We dont need to do grayscale because grayscale function is already given
+                        #   img_copy = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                          new_image = ndimage.median_filter(img, size=size, mode=mode)
                           self.image_control.load_image(new_image)
                           new_window.destroy()    
                 except ValueError:

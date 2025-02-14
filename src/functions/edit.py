@@ -66,10 +66,13 @@ class Edit:
             self.message.show("Error", e)
     
     def grayscale(self):
-        try:   
+        try:
             img = self.image_control.get_image()
-            gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            self.image_control.load_image(gray_image)
+            if img is not None:
+                gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                self.image_control.load_image(gray_image)
+            else:
+                raise ValueError("😟 The image is not loaded. Please load an image before processing.")
         except Exception as e:
             print(e)
             self.message.show("Error", e)
@@ -77,8 +80,11 @@ class Edit:
     def bgr2hsv(self):
         try:
             img = self.image_control.get_image()
-            hsvimage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-            self.image_control.load_image(hsvimage)
+            if img is not None:
+                hsvimage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+                self.image_control.load_image(hsvimage)
+            else:
+                raise ValueError("😟 The image is not loaded. Please load an image before processing.")
         except Exception as e:
             print(e)
             self.message.show("Error", e)

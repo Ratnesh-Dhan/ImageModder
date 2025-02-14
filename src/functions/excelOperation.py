@@ -23,16 +23,21 @@ class ExcelOperation:
         menubar.add_cascade(label="Excel operatin", menu=self.excel_menu)
         self.excel_menu.add_command(label="Show matplotlib image", command=lambda: self.utils.matplotlib_show(image_control.get_image()))
         self.excel_menu.add_command(label="Threshold", command=self.threshold)
+        self.excel_menu.add_command(label="Square each pixels", command=self.excel_control.pixel_square)
+        self.excel_menu.add_command(label="Add value to pixel", command=self.add_val)
         
     def threshold(self):
         try:
             def apply_threshold():
-                lower = int(entry1.get())
-                print(lower)
-                upper = int(entry2.get())
-                bool = self.excel_control.value_thershold(lower, upper)
-                if(bool):
-                    self.message.show("Sucess", "Applied")
+                try:
+                    lower = float(entry1.get())  
+                    upper = float(entry2.get())
+                    bool = self.excel_control.value_thershold(lower, upper)
+                    if(bool):
+                        new_window.destroy()
+                        self.message.show("Success", "Applied 😊")
+                except ValueError:
+                    self.message.show("Caution", "Values should be integer or floating")
             new_window = tk.Toplevel(self.root)
             new_window.title("Threshold")
             #Setting height and width of the window
@@ -66,3 +71,50 @@ class ExcelOperation:
             self.message.show("Error", "Value should be floating/integer number.")
         except Exception as e:
             self.message.show("Error", e)
+
+    def add_val(self):
+        def addValue():
+            try:
+                try:
+                    pixel_value = float(entry1.get())
+                except ValueError:
+                    raise ValueError("Entry 1 must be a float.")
+                
+                try:
+                    value = int(entry2.get())
+                except ValueError:
+                    raise ValueError("Entry 2 must be an integer.")
+                bool = self.excel_control.add_value_to_pixels(value, pixel_value)
+                if bool:
+                    self.message.show("Success", "Adjustment successful! 🎉")
+                else:
+                    self.message.show("Error","😟 Oops! Something went wrong. Please check your inputs and try again.")
+            except ValueError as e:
+                self.message.show("Error", e)
+            
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Adjust Pixel Intensity")
+        #Setting height and width of the window
+        window_width = 220
+        window_height = 180
+        #Setting the window on center
+        screen_width = new_window.winfo_screenwidth()
+        screen_height = new_window.winfo_screenheight()
+        x = (screen_width//2) - (window_width // 2)
+        y = (screen_height // 2) - (window_height // 2)
+        new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+        ttk.Label(new_window, text="Adjust Pixel Intensity", font=self.custom_font).pack(pady=10)
+        frame1 = tk.Frame(new_window)
+        frame1.pack(pady=(0, 10))
+        ttk.Label(frame1, text="Threshold Value:", font=self.label_font).pack(side=tk.LEFT, padx=(0, 5))
+        entry1 = ttk.Entry(frame1, width=6, font=('Helvetica', 12))
+        entry1.insert(0, "0.0")
+        entry1.pack(side=tk.RIGHT)
+        frame2 = tk.Frame(new_window)
+        frame2.pack(pady=(0, 10))
+        ttk.Label(frame2, text="Increment Value:", font=self.label_font).pack(side=tk.LEFT, padx=(0,5))
+        entry2 = ttk.Entry(frame2, width=6, font=('Helvetica', 12))
+        entry2.insert(0, "0")
+        entry2.pack(side=tk.RIGHT)
+        ttk.Button(new_window, text="Apply Adjustment", command=addValue).pack(pady=(10,0), ipadx=5, ipady=3)

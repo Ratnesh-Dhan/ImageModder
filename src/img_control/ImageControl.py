@@ -285,7 +285,7 @@ class ImageControl:
                 print(file_path)
                 if file_path:
                     imageio.imwrite(file_path, self.img_state[self.last])
-                    self.custom_error.show("Sucess", "Saved...!")
+                    self.custom_error.show("Success", "Saved! 🎉")
         except Exception as e:
             self.custom_error.show("Error", e)
             print(e)
