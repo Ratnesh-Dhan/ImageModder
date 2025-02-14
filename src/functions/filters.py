@@ -358,12 +358,16 @@ class CustomFilters:
                     if size <= 0:
                         label1.config(text="size must be a positive integer")
                     else:
-                          new_image = ndimage.median_filter(img, size=size, mode=mode)
+                          img_copy = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                          new_image = ndimage.median_filter(img_copy, size=size, mode=mode)
                           self.image_control.load_image(new_image)
                           new_window.destroy()    
                 except ValueError:
                    # custom_font = tk.font.Font(size=10, weight=tk.font.NORMAL, family="Arial", slant="italic")
                     label1.config(text="Invalid input. Please enter a positive integer.")
+                except Exception as e:
+                    print(e)
+                    self.custom_error.show("Error", e)
                 
             new_window = tk.Toplevel(self.root)
             new_window.title("Median Filter")

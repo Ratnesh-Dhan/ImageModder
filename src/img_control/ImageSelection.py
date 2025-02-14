@@ -122,7 +122,7 @@ import cv2
 #         print("shit cleaning")
 #         if self.rect:
 #             self.canvas.delete(self.rect)
-        
+   
         
 class ImageSelection:
     def __init__(self, root, image_control):
@@ -232,6 +232,7 @@ class ImageSelection:
                 raise ValueError("Invalid selection area. Please try again.")
                 
             # Update the image in the image control
+            self.image_control.set_xy(0, 0)
             self.image_control.load_image(cropped_image)
             self.canvas.delete(self.rect)
             self.cut_coords = None

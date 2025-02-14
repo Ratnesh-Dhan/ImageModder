@@ -27,8 +27,10 @@ class ExcelOperation:
     def threshold(self):
         try:
             def apply_threshold():
-                value = int(entry1.get())
-                bool = self.excel_control.value_thershold(value)
+                lower = int(entry1.get())
+                print(lower)
+                upper = int(entry2.get())
+                bool = self.excel_control.value_thershold(lower, upper)
                 if(bool):
                     self.message.show("Sucess", "Applied")
             new_window = tk.Toplevel(self.root)
