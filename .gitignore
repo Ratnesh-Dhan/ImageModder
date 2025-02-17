@@ -4,8 +4,10 @@
 # Ignore environment variables file
 .env
 
-# Ignore build directory
+# Ignore build directory and files
 /build
+/dist
+*.exe
 
 # venv file
 /venv
