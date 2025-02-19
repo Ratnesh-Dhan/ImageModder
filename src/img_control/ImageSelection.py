@@ -198,6 +198,7 @@ class ImageSelection:
 
             #FOR TIME BEING . RIGHT NOW DOWNSCALE CROPING IS NOT WORKING AS IT SHOULD BE
             if height_scale < 1:
+                self.clean_up()
                 raise ValueError("😔 We're sorry, but currently, zoomed out images or downscaled images cannot be cropped.")
                 
             # Get the selection coordinates in preview space
