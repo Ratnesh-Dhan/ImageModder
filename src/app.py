@@ -1,4 +1,5 @@
 import sys
+import os
 import tkinter as tk
 from tkinter import ttk
 #from src.utils.image_utils import ImageViewer
@@ -15,6 +16,7 @@ from PIL import Image, ImageTk
 
 class App:
     def __init__(self, root, menubar, custom_font, label_font, button_font, menu_font):
+
         self.root = root
         self.root.title("ImageModder")
         
@@ -58,11 +60,34 @@ class App:
         self.excel = ExcelOperation(self.topFrame, menubar, menu_font,custom_font,label_font, self.image_control)
         
         #button icons
-        hand = Image.open("src/public/hand.png")
-        grab = Image.open("src/public/hold.png")
-        rotate = Image.open("src/public/rotate.png")
-        select = Image.open("src/public/select.png")
-        cut = Image.open("src/public/cut.png")
+        if getattr(sys, 'frozen', False):
+            BASE_DIR = sys._MEIPASS
+        else:
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+        try:
+            hand_path = os.path.join(BASE_DIR, "src", "public", "hand.png")
+            hold_path = os.path.join(BASE_DIR,"src", "public", "hold.png")
+            rotate_path = os.path.join(BASE_DIR, "src", "public", "rotate.png")
+            select_path = os.path.join(BASE_DIR, "src", "public", "select.png")
+            cut_path = os.path.join(BASE_DIR, "src", "public", "cut.png")
+            hand_path = os.path.normpath(hand_path)
+            hold_path = os.path.normpath(hold_path)
+            rotate_path = os.path.normpath(rotate_path)
+            select_path = os.path.normpath(select_path)
+            cut_path = os.path.normpath(cut_path)
+            hand = Image.open(hand_path)
+            grab = Image.open(hold_path)
+            rotate = Image.open(rotate_path)
+            select = Image.open(select_path)
+            cut = Image.open(cut_path)
+        except FileNotFoundError:
+            hand = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "hand.png")))
+            grab = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "hold.png")))
+            rotate = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "rotate.png")))
+            select = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "select.png")))
+            cut = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "cut.png")))
+            
         hand = hand.resize((30, 30), Image.LANCZOS)
         grab = grab.resize((30, 30), Image.LANCZOS)
         rotate = rotate.resize((30, 30), Image.LANCZOS)

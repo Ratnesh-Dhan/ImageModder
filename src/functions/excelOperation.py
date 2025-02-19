@@ -20,7 +20,7 @@ class ExcelOperation:
         #Excel menu
         self.excel_menu = tk.Menu(menubar, tearoff=0)
         self.excel_menu.configure(bg=menu_bg, font=menu_font)
-        menubar.add_cascade(label="Excel operatin", menu=self.excel_menu)
+        menubar.add_cascade(label="Excel operation", menu=self.excel_menu)
         self.excel_menu.add_command(label="Show matplotlib image", command=lambda: self.utils.matplotlib_show(image_control.get_image()))
         self.excel_menu.add_command(label="Threshold", command=self.threshold)
         self.excel_menu.add_command(label="Square each pixels", command=self.excel_control.pixel_square)

@@ -1,3 +1,5 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
@@ -9,14 +11,32 @@ class CustomErrorBox:
         self.font = tk.font.Font(size=13,weight=tk.font.BOLD, family='Comic Sans MS')
         
     def show(self, title, message):
-        if title == 'Caution':
-            img = 'src/public/caution.png'
-        elif title == 'Error':
-            img = 'src/public/cancel.png'
-        elif title == 'Success':
-            img = 'src/public/checked.png'
+
+        if getattr(sys, 'frozen', False):
+            BASE_DIR = sys._MEIPASS
         else:
-            img = 'src/public/cancel.png'
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+        caution_path = os.path.join(BASE_DIR, "src", "public", "caution.png")
+        caution_path = os.path.normpath(caution_path)
+        cancel_path = os.path.join(BASE_DIR, "src", "public", "cancel.png")
+        cancel_path = os.path.normpath(cancel_path)
+        checked_path = os.path.join(BASE_DIR, "src", "public", "checked.png")
+        checked_path = os.path.normpath(checked_path)
+        # cancel_path = os.path.join(BASE_DIR, "public/cancel.png")
+
+        if title == 'Caution':
+            # img = 'src/public/caution.png'
+            img = caution_path
+        elif title == 'Error':
+            # img = 'src/public/cancel.png'
+            img = cancel_path
+        elif title == 'Success':
+            # img = 'src/public/checked.png'
+            img = checked_path
+        else:
+            # img = 'src/public/cancel.png'
+            img = cancel_path
             
         
         photo = Image.open(img)
