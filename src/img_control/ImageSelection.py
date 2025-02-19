@@ -195,6 +195,10 @@ class ImageSelection:
             
             # Get current scale
             height_scale, width_scale = self.image_control.get_scale()
+
+            #FOR TIME BEING . RIGHT NOW DOWNSCALE CROPING IS NOT WORKING AS IT SHOULD BE
+            if height_scale < 1:
+                raise ValueError("😔 We're sorry, but currently, zoomed out images or downscaled images cannot be cropped.")
                 
             # Get the selection coordinates in preview space
             start_x, start_y, end_x, end_y = self.cut_coords
@@ -224,7 +228,7 @@ class ImageSelection:
             
             # Print final cropping coordinates
             print(f"Final crop coordinates: ({orig_start_x}, {orig_start_y}) to ({orig_end_x}, {orig_end_y})")
-            
+             
             # Crop the image using the converted coordinates
             cropped_image = self.image[orig_start_y:orig_end_y, orig_start_x:orig_end_x]
             
