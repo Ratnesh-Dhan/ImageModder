@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 # import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
+from src.utils.constants import bottom_bg_color
 import pandas as pd
 import numpy as np
 
@@ -18,7 +19,7 @@ class ImageControl:
         self.custom_error = CustomErrorBox(self.root)
         
         #creating canvas widget
-        self.canvas = tk.Canvas(self.root, bg="#4DA1A9")
+        self.canvas = tk.Canvas(self.root, bg=bottom_bg_color)
         # self.canvas.pack(fill=tk.BOTH, expand=True)
         
         # Initialize image and image reference
