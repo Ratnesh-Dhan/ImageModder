@@ -15,3 +15,6 @@ menu_bg = "#EBE5C2"
 top_bg_color = "#504B38"
 bottom_bg_color= "#B9B28A"
 
+
+# COLOR HUNT LINK FOR THE COLOR USED IN THE PROJECT
+# https://colorhunt.co/palette/f8f3d9ebe5c2b9b28a504b38
