@@ -12,6 +12,7 @@ from src.functions.graphs import Graphs
 from src.functions.file import File
 from src.functions.edit import Edit
 from src.functions.excelOperation import ExcelOperation
+from src.utils.constants import top_bg_color, bottom_bg_color
 from PIL import Image, ImageTk
 
 class App:
@@ -30,7 +31,7 @@ class App:
         self.root.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
         self.root.update_idletasks()
         # self.root.geometry("800x500")
-        self.root.config(bg="#79D7BE")
+        self.root.config(bg=top_bg_color)
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         
         self.drag = False
@@ -40,8 +41,8 @@ class App:
         # self.style.configure('TButtonClicked', background="#2E5077", foreground="#F6F4F0", font=('Helvetica', 10, 'bold'))
         
         #Creating and packing frames 
-        self.topFrame = tk.Frame(self.root, background="#79D7BE", height=100 )
-        self.bottomFrame = tk.Frame(self.root, background="#4DA1A9")
+        self.topFrame = tk.Frame(self.root, background=top_bg_color, height=100 )
+        self.bottomFrame = tk.Frame(self.root, background=bottom_bg_color)
         self.topFrame.pack(fill='x', pady=(0,10))
         self.bottomFrame.pack(fill='both', expand=True)
         

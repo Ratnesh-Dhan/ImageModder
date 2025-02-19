@@ -299,10 +299,16 @@ class ImageControl:
             return False
         
     def rotate(self):
-        img = self.img_state[self.last]
-        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
-        self.load_image(img)
-        
+        try:
+            img = self.img_state[self.last]
+            if img is not None:
+                img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+                self.load_image(img)
+            else:
+                raise FileNotFoundError("There is no image to rotate or image object is none")
+        except FileNotFoundError as e:
+            print(e)
+            self.custom_error.show("Caution", "No Image to rotate! 🚫")
     def xy(self):
         return self.image_x, self.image_y
     

@@ -17,29 +17,41 @@ class CustomErrorBox:
         else:
             BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-        caution_path = os.path.join(BASE_DIR, "src", "public", "caution.png")
-        caution_path = os.path.normpath(caution_path)
-        cancel_path = os.path.join(BASE_DIR, "src", "public", "cancel.png")
-        cancel_path = os.path.normpath(cancel_path)
-        checked_path = os.path.join(BASE_DIR, "src", "public", "checked.png")
-        checked_path = os.path.normpath(checked_path)
-        # cancel_path = os.path.join(BASE_DIR, "public/cancel.png")
+        try:
+            caution_path = os.path.join(BASE_DIR, "src", "public", "caution.png")
+            caution_path = os.path.normpath(caution_path)
+            cancel_path = os.path.join(BASE_DIR, "src", "public", "cancel.png")
+            cancel_path = os.path.normpath(cancel_path)
+            checked_path = os.path.join(BASE_DIR, "src", "public", "checked.png")
+            checked_path = os.path.normpath(checked_path)
+            # cancel_path = os.path.join(BASE_DIR, "public/cancel.png")
 
-        if title == 'Caution':
-            # img = 'src/public/caution.png'
-            img = caution_path
-        elif title == 'Error':
-            # img = 'src/public/cancel.png'
-            img = cancel_path
-        elif title == 'Success':
-            # img = 'src/public/checked.png'
-            img = checked_path
-        else:
-            # img = 'src/public/cancel.png'
-            img = cancel_path
+            if title == 'Caution':
+                # img = 'src/public/caution.png'
+                img = caution_path
+            elif title == 'Error':
+                # img = 'src/public/cancel.png'
+                img = cancel_path
+            elif title == 'Success':
+                # img = 'src/public/checked.png'
+                img = checked_path
+            else:
+                # img = 'src/public/cancel.png'
+                img = cancel_path
+                
             
-        
-        photo = Image.open(img)
+            photo = Image.open(img)
+        except FileNotFoundError:
+            if title == 'Caution':
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+            elif title == 'Error':
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+            elif title == 'Success':
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+            else:
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+            photo = Image.open(img)
+
         photo = photo.resize((50,50))
         photo = ImageTk.PhotoImage(photo)
         top = tk.Toplevel(self.root)
