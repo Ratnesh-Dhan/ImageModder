@@ -9,5 +9,12 @@ def initialize_fonts():
     menu_font = font.Font(size=12, family='Corbel')
     return custom_font, label_font, button_font, menu_font
 
-menu_bg = '#F6F4F0'
+# button_bg = ?
+# menu_bg = '#F6F4F0'
+menu_bg = "#EBE5C2"
+top_bg_color = "#504B38"
+bottom_bg_color= "#B9B28A"
 
+
+# COLOR HUNT LINK FOR THE COLOR USED IN THE PROJECT
+# https://colorhunt.co/palette/f8f3d9ebe5c2b9b28a504b38
