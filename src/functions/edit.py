@@ -5,8 +5,9 @@ from src.utils.customErrorBox import CustomErrorBox
 import cv2
 
 class Edit:
-    def __init__(self, root, image_control, menubar, menu_font):
+    def __init__(self, root, bottomFrame, image_control, menubar, menu_font):
         self.root = root
+        self.bottomFrame = bottomFrame
         self.image_control = image_control
         self.message = CustomErrorBox(root)
         
@@ -18,6 +19,7 @@ class Edit:
         self.edit_menu.add_separator()
         self.edit_menu.add_command(label="Zoom in", command=image_control.zoom_in)
         self.edit_menu.add_command(label="Zoom out", command=image_control.zoom_out)
+        self.edit_menu.add_command(label='Fit to screen', command=self.fit_to_screen)
         self.edit_menu.add_separator()
         self.edit_menu.add_command(label="grayscale", command=self.grayscale)
         self.edit_menu.add_command(label="BGR to HSV", command=self.bgr2hsv)
@@ -26,6 +28,24 @@ class Edit:
         self.edit_menu.add_command(label="Green Channel", command=self.green_channel)
         self.edit_menu.add_command(label="Blue Channel", command=self.blue_channel)
         
+    def fit_to_screen(self):
+        try:
+            img = self.image_control.get_image()
+            if img is not None:
+                screen_height = self.bottomFrame.winfo_height()
+                print("Screen height: ", screen_height)
+                print("Image height: ", img.shape[0])
+                ratio = screen_height / img.shape[0]
+                new_image = cv2.resize(img, (int(img.shape[1] * ratio), int(img.shape[0] * ratio)))
+                self.image_control.load_image(new_image)
+            else:
+                raise ValueError("The image is not loaded. Please load an image before processing.")
+        except ValueError as e:
+            self.message.show("Error", e)
+        except Exception as e:
+            self.message.show("Error", e)
+                
+
     def red_channel(self):
         try:        
             img = self.image_control.get_image()
