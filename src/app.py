@@ -74,7 +74,7 @@ class App:
             rotate_path = os.path.join(BASE_DIR, "src", "public", "rotate.png")
             select_path = os.path.join(BASE_DIR, "src", "public", "select.png")
             cut_path = os.path.join(BASE_DIR, "src", "public", "cut.png")
-            pixel_path = os.path.join(BASE_DIR, "src", "public", "cut.png")
+            pixel_path = os.path.join(BASE_DIR, "src", "public", "dot-square.png")
             hand_path = os.path.normpath(hand_path)
             hold_path = os.path.normpath(hold_path)
             rotate_path = os.path.normpath(rotate_path)
@@ -93,7 +93,7 @@ class App:
             rotate = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "rotate.png")))
             select = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "select.png")))
             cut = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "cut.png")))
-            pixel = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "cut.png")))
+            pixel = Image.open(os.path.normpath(os.path.join(BASE_DIR, "public", "dot-square.png")))
         hand = hand.resize((30, 30), Image.LANCZOS)
         grab = grab.resize((30, 30), Image.LANCZOS)
         rotate = rotate.resize((30, 30), Image.LANCZOS)
@@ -113,14 +113,19 @@ class App:
         ttk.Button(self.topFrame, image=self.rotate_image, command=self.image_control.rotate).grid(row=1, column=1, ipadx=2, ipady=2)  
         ttk.Button(self.topFrame, image=self.select_image, command=self.selection_start).grid(row=1, column=2, ipadx=2, ipady=2)  
         ttk.Button(self.topFrame, image=self.cut_image, command=self.image_cut).grid(row=1, column=3, ipadx=2, ipady=2)  
-        ttk.Button(self.topFrame, image=self.pixel_image, command=self.pixel_works.click_to_cut_area).grid(row=1, column=4, ipadx=2, ipady=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        ttk.Button(self.topFrame, image=self.pixel_image, command=self.pixel_works_toggle).grid(row=1, column=4, ipadx=2, ipady=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         # ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
 
+    def pixel_works_toggle(self):
+        if self.image_selection is not None:
+            self.image_selection.clean_up()
+        self.pixel_works.toggle_select_boxes()
 
     def selection_start(self):
         if self.drag:
             self.image_control.toggle_drag()
             self.button_hand.config(image=self.hand_image)
+            self.pixel_works.unbind_select_boxes()
             self.image_drag.stopu()
         if self.image_selection is not None:
             self.image_selection.clean_up()
