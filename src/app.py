@@ -51,7 +51,7 @@ class App:
         self.message = CustomErrorBox(self.root)
         self.image_control = ImageControl(self.bottomFrame)
         self.image_drag = ImageDrag(self.image_control)
-        self.pixel_works = PixelWorks(self.root, self.image_control)
+        self.pixel_works = PixelWorks(self.root, self.image_control, custom_font)
         # self.image_selection = ImageSelection(self.bottomFrame, self.image_control)
         self.image_selection = None
         
