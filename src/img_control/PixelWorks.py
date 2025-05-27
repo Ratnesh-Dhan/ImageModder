@@ -18,7 +18,14 @@ class PixelWorks:
 
     def toggle_select_boxes(self):
         try:
+            def apply_square_size():
+                self.square_size = int(entry1.get())
+                self.name = entry2.get()
+                print(self.square_size, self.name)
+                new_window.destroy()
+
             if not self.toggle:
+                print("toggle True")
                 new_window = tk.Toplevel(self.root)
                 new_window.title("Pixel Works")
                 window_width = 220
@@ -48,7 +55,7 @@ class PixelWorks:
                 entry1.insert(0, "31")
                 entry1.focus()
                 entry1.pack(side=tk.RIGHT, padx=(15, 5), pady=0)
-                ttk.Button(new_window, text="Apply", command=lambda: print("hellow world")).pack(pady=15 , ipadx=5, ipady=3)
+                ttk.Button(new_window, text="Apply", command=apply_square_size).pack(pady=15 , ipadx=5, ipady=3)
 
             self.toggle = not self.toggle
             if self.toggle:
@@ -68,8 +75,14 @@ class PixelWorks:
     def click_to_cut_area(self, event):
         try:
             x, y = event.x, event.y
+            # img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
+            # cropped_img = img[y - self.square_size//2:y + self.square_size//2, x - self.square_size//2:x + self.square_size//2]
+            x_image, y_image = self.image_control.xy()
+            # img = cv2.rectangle(self.image_control.get_image(),x_image + (x - (self.square_size//2 +1 ), y_image + y - (self.square_size//2 + 1 )),x_image + (x + 1 +  self.square_size//2, y_image + y + 1 + self.square_size//2), (0, 0, 255), 1)
             img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
-            cropped_img = img[y - self.square_size//2:y + self.square_size//2, x - self.square_size//2:x + self.square_size//2]
+            # cropped_img = img[y_image +y - self.square_size//2:y_image + y + self.square_size//2,x_image + x - self.square_size//2:x_image + x + self.square_size//2]
+            cropped_img = img[y - self.square_size//2:y + self.square_size//2,x - self.square_size//2:x + self.square_size//2]
+            
             self.image_control.load_image(img)
 
             # Converting the cropped image to BGR to RGB
@@ -78,14 +91,14 @@ class PixelWorks:
             output_dir = "squares"
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
-            save_location = os.path.join(output_dir, f"square_{self.count}.png")
+            save_location = os.path.join(output_dir, f"{self.name}_{self.count}.png")
             if not os.path.exists(save_location):
                 cv2.imwrite(save_location, cropped_img)
                 self.count += 1
             else:
-                while(os.path.exists(os.path.join(output_dir, f"square_{self.count}.png"))):
+                while(os.path.exists(os.path.join(output_dir, f"{self.name}_{self.count}.png"))):   
                     self.count += 1
-                cv2.imwrite(os.path.join(output_dir, f"square_{self.count}.png"), cropped_img)
+                cv2.imwrite(os.path.join(output_dir, f"{self.name}_{self.count}.png"), cropped_img)
                 self.count += 1
         except Exception as e:
             self.custom_error.show("Error", str(e))
