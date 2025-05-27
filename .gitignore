@@ -17,3 +17,7 @@
 *.pyc
 *.pyo
 __pycache__/
+
+# Ignore output directory & files
+/squares
+/squares/*

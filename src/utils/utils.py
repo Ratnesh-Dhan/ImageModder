@@ -15,7 +15,7 @@ class Utils:
     def matplotlib_show(self, img):
         try:
             plt.title('By Matplotlib')
-            plt.imshow(img)
+            plt.imshow(img, cmap="jet")
             plt.axis('off')
             plt.show()
         except Exception as e:

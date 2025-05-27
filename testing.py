@@ -1,7 +1,31 @@
 import sys
 
+import pandas as pd
+from matplotlib import pyplot as plt
+
+file_path = r"C:\Users\NDT Lab\Software\Sunnypaji\files\data.xlsx"
+
+df = pd.read_excel(file_path)
+plt.imshow(df)
+plt.show()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sys.exit(1)
 def circular():
     pass
     

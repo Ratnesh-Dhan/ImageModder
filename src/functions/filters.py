@@ -138,7 +138,7 @@ class CustomFilters:
                 new_window.destroy()
             except Exception as e:
                 print(f"Error: {e}")
-                self.custom_error.show("Error", "e")
+                self.custom_error.show("Error", e)
         if img is not None:
             new_window = tk.Toplevel(self.root)
             new_window.title("Prewitt Filter")

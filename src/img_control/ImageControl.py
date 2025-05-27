@@ -4,10 +4,10 @@ import tkinter as tk
 from threading import Timer
 from tkinter import filedialog
 from PIL import Image, ImageTk
-# import imageio as imageioFull
 import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
 from src.utils.constants import bottom_bg_color
+# from matplotlib import pyplot as imageio
 import pandas as pd
 import numpy as np
 
@@ -198,6 +198,7 @@ class ImageControl:
                 df = pd.read_excel(file_path, header=None) 
                 pixel_array = df.to_numpy()
                 pixel_array = pixel_array.astype(np.uint8)
+
                 self.load_image(pixel_array)
             except Exception as e:
                 self.custom_error.show("Error", f"faild to open excel: {e}")
