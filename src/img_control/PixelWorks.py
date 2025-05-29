@@ -21,11 +21,11 @@ class PixelWorks:
             def apply_square_size():
                 self.square_size = int(entry1.get())
                 self.name = entry2.get()
-                print(self.square_size, self.name)
+                self.toggle = True
+                self.image_control.canvas.bind("<Button-1>", self.click_to_cut_area)
                 new_window.destroy()
 
             if not self.toggle:
-                print("toggle True")
                 new_window = tk.Toplevel(self.root)
                 new_window.title("Pixel Works")
                 window_width = 220
@@ -56,12 +56,9 @@ class PixelWorks:
                 entry1.focus()
                 entry1.pack(side=tk.RIGHT, padx=(15, 5), pady=0)
                 ttk.Button(new_window, text="Apply", command=apply_square_size).pack(pady=15 , ipadx=5, ipady=3)
-
-            self.toggle = not self.toggle
-            if self.toggle:
-                self.image_control.canvas.bind("<Button-1>", self.click_to_cut_area)
+            
             else:
-                self.image_control.canvas.unbind("<Button-1>")
+                self.unbind_select_boxes()
         except Exception as e:
             self.custom_error.show("Error", str(e))
 
@@ -78,6 +75,7 @@ class PixelWorks:
             # img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
             # cropped_img = img[y - self.square_size//2:y + self.square_size//2, x - self.square_size//2:x + self.square_size//2]
             x_image, y_image = self.image_control.xy()
+            print(x_image, y_image, "This is x and y of image . it could be origin of image")
             # img = cv2.rectangle(self.image_control.get_image(),x_image + (x - (self.square_size//2 +1 ), y_image + y - (self.square_size//2 + 1 )),x_image + (x + 1 +  self.square_size//2, y_image + y + 1 + self.square_size//2), (0, 0, 255), 1)
             img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
             # cropped_img = img[y_image +y - self.square_size//2:y_image + y + self.square_size//2,x_image + x - self.square_size//2:x_image + x + self.square_size//2]

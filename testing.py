@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 file_path = r"C:\Users\NDT Lab\Software\Sunnypaji\files\data.xlsx"
 
 df = pd.read_excel(file_path)
-plt.imshow(df)
+plt.imshow(df, cmap="jet")
 plt.show()
 
 
