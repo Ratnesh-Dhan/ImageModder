@@ -21,3 +21,6 @@ __pycache__/
 # Ignore output directory & files
 /squares
 /squares/*
+
+# Ignore test files & folders
+testing.py

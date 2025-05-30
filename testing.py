@@ -1,4 +1,56 @@
 import sys
+import numpy as np
+
+
+ary = [1,2,3,4,5,6,7,8]
+ary = np.array(ary)
+
+ary[ary < 6] = 0
+
+bary = []
+for i in range(100):
+    bary.append(i)
+
+print(bary)
+
+for i in range(0, 100, 3):
+    bary.remove(i)
+print(bary)
+
+# bary2 = []
+# for i in bary:
+#     multiple = i*3
+#     if not bary.__contains__(multiple):
+#         bary2.append(i)
+# print(bary2)
+
+# print(ary)
+sys.exit(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -6,7 +58,7 @@ from matplotlib import pyplot as plt
 file_path = r"C:\Users\NDT Lab\Software\Sunnypaji\files\data.xlsx"
 
 df = pd.read_excel(file_path)
-plt.imshow(df)
+plt.imshow(df, cmap="jet")
 plt.show()
 
 

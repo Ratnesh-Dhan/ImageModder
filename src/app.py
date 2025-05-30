@@ -119,7 +119,7 @@ class App:
     def rotate_image(self):
         if self.image_selection is not None:
             self.image_selection.clean_up()
-        self.pixel_works.toggle_select_boxes()
+        self.pixel_works.unbind_select_boxes()
         self.image_control.rotate()
         
     def pixel_works_toggle(self):
@@ -147,7 +147,7 @@ class App:
             self.message.show("Caution", "Selection is required to cut image.")
         
     def drag_function(self):
-        self.pixel_works.toggle_select_boxes()
+        self.pixel_works.unbind_select_boxes()
         if self.image_selection is not None:
             # print("delete image_selection instnce from drag_function")
             self.image_selection.clean_up()
