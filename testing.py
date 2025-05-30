@@ -1,7 +1,14 @@
 import sys
 import numpy as np
+from matplotlib import pyplot as plt
+from PIL import Image
 
+image = plt.imread(r"C:\Users\NDT Lab\Pictures\overlapped_smallFont.png")
+plt.imshow(image)
+plt.axis("off")
+plt.show()
 
+sys.exit(0)
 ary = [1,2,3,4,5,6,7,8]
 ary = np.array(ary)
 

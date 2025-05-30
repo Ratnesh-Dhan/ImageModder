@@ -15,50 +15,58 @@ class PixelWorks:
         self.toggle = False
         self.custom_error = CustomErrorBox(self.root)
         self.custom_font = custom_font
+        self.window_form = None
 
     def toggle_select_boxes(self):
         try:
-            def apply_square_size():
-                self.square_size = int(entry1.get())
-                self.name = entry2.get()
-                self.toggle = True
-                self.image_control.canvas.bind("<Button-1>", self.click_to_cut_area)
-                new_window.destroy()
+            if self.image_control.get_image() is not None:
+                def apply_square_size():
+                    self.square_size = int(entry1.get())
+                    self.name = entry2.get()
+                    self.toggle = True
+                    self.image_control.canvas.bind("<Button-1>", self.click_to_cut_area)
+                    self.window_form.destroy()
+                    self.window_form = None
 
-            if not self.toggle:
-                new_window = tk.Toplevel(self.root)
-                new_window.title("Pixel Works")
-                window_width = 220
-                window_height = 150
+                if not self.toggle:
 
-                #CENTERING THE WINDOW
-                screen_width = new_window.winfo_screenwidth()
-                screen_height = new_window.winfo_screenheight()
-                x = (screen_width//2) - (window_width // 2)
-                y = (screen_height // 2) - (window_height // 2)
-                new_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+                    if self.window_form is not None and self.window_form.winfo_exists():
+                        self.window_form.lift() # Bringing exsisting window form on top of screen
+                    else:
+                        self.window_form = tk.Toplevel(self.root)
+                        self.window_form.title("Pixel Works")
+                        window_width = 220
+                        window_height = 150
 
-                ttk.Label(new_window, text="Pixel Works", font=self.custom_font).pack()
+                        #CENTERING THE WINDOW
+                        screen_width = self.window_form.winfo_screenwidth()
+                        screen_height = self.window_form.winfo_screenheight()
+                        x = (screen_width//2) - (window_width // 2)
+                        y = (screen_height // 2) - (window_height // 2)
+                        self.window_form.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+                        ttk.Label(self.window_form, text="Pixel Works", font=self.custom_font).pack()
+                        # Sufixx for cut pieces 
+                        frame2 = tk.Frame(self.window_form, padx=10, pady=5)
+                        frame2.pack(fill='x')
+                        ttk.Label(frame2, text='Name :').pack(side=tk.LEFT)
+                        entry2 = ttk.Entry(frame2)
+                        entry2.insert(0, "Square")
+                        entry2.pack(side=tk.RIGHT, padx=(15, 5), pady=0)           
+                        # Size of cut pieces as pixels
+                        frame1 = tk.Frame(self.window_form, padx=10, pady=5 )
+                        frame1.pack(fill='x')
+                        ttk.Label(frame1, text="Square Size :").pack(side=tk.LEFT)
+                        entry1 = ttk.Entry(frame1)
+                        entry1.insert(0, "31")
+                        entry1.focus()
+                        entry1.pack(side=tk.RIGHT, padx=(15, 5), pady=0)
+                        ttk.Button(self.window_form, text="Apply", command=apply_square_size).pack(pady=15 , ipadx=5, ipady=3)
                 
-                frame2 = tk.Frame(new_window, padx=10, pady=5)
-                frame2.pack(fill='x')
-                ttk.Label(frame2, text='Name :').pack(side=tk.LEFT)
-                entry2 = ttk.Entry(frame2)
-                entry2.insert(0, "Square")
-                entry2.pack(side=tk.RIGHT, padx=(15, 5), pady=0)
-               
-
-                frame1 = tk.Frame(new_window, padx=10, pady=5 )
-                frame1.pack(fill='x')
-                ttk.Label(frame1, text="Square Size :").pack(side=tk.LEFT)
-                entry1 = ttk.Entry(frame1)
-                entry1.insert(0, "31")
-                entry1.focus()
-                entry1.pack(side=tk.RIGHT, padx=(15, 5), pady=0)
-                ttk.Button(new_window, text="Apply", command=apply_square_size).pack(pady=15 , ipadx=5, ipady=3)
-            
+                else:
+                    self.unbind_select_boxes()
             else:
-                self.unbind_select_boxes()
+                self.custom_error.show("Error","No Image found.")
         except Exception as e:
             self.custom_error.show("Error", str(e))
 
@@ -74,8 +82,6 @@ class PixelWorks:
             x, y = event.x, event.y
             # img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
             # cropped_img = img[y - self.square_size//2:y + self.square_size//2, x - self.square_size//2:x + self.square_size//2]
-            x_image, y_image = self.image_control.xy()
-            print(x_image, y_image, "This is x and y of image . it could be origin of image")
             # img = cv2.rectangle(self.image_control.get_image(),x_image + (x - (self.square_size//2 +1 ), y_image + y - (self.square_size//2 + 1 )),x_image + (x + 1 +  self.square_size//2, y_image + y + 1 + self.square_size//2), (0, 0, 255), 1)
             img = cv2.rectangle(self.image_control.get_image(), (x - (self.square_size//2 +1 ), y - (self.square_size//2 + 1 )), (x + 1 +  self.square_size//2, y + 1 + self.square_size//2), (0, 0, 255), 1)
             # cropped_img = img[y_image +y - self.square_size//2:y_image + y + self.square_size//2,x_image + x - self.square_size//2:x_image + x + self.square_size//2]

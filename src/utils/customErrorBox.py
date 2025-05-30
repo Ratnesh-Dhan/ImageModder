@@ -11,7 +11,6 @@ class CustomErrorBox:
         self.font = tk.font.Font(size=13,weight=tk.font.BOLD, family='Comic Sans MS')
         
     def show(self, title, message):
-
         if getattr(sys, 'frozen', False):
             BASE_DIR = sys._MEIPASS
         else:
@@ -45,11 +44,11 @@ class CustomErrorBox:
             if title == 'Caution':
                 img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
             elif title == 'Error':
-                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "cancel.png"))
             elif title == 'Success':
-                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "checked.png"))
             else:
-                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "caution.png"))
+                img = os.path.normpath(os.path.join(BASE_DIR, "../public", "cancel.png"))
             photo = Image.open(img)
 
         photo = photo.resize((50,50))

@@ -110,13 +110,13 @@ class App:
         self.button_hand = ttk.Button(self.topFrame, image=self.hand_image, command=self.drag_function)
         self.button_hand.bind("<Button-1>", self.button_color)
         self.button_hand.grid(row=1, column=0, ipady=2, ipadx=2)  
-        ttk.Button(self.topFrame, image=self.rotate_image, command=self.rotate_image).grid(row=1, column=1, ipadx=2, ipady=2)  
+        ttk.Button(self.topFrame, image=self.rotate_image, command=self.rotate_the_image).grid(row=1, column=1, ipadx=2, ipady=2)  
         ttk.Button(self.topFrame, image=self.select_image, command=self.selection_start).grid(row=1, column=2, ipadx=2, ipady=2)  
         ttk.Button(self.topFrame, image=self.cut_image, command=self.image_cut).grid(row=1, column=3, ipadx=2, ipady=2)  
         ttk.Button(self.topFrame, image=self.pixel_image, command=self.pixel_works_toggle).grid(row=1, column=4, ipadx=2, ipady=2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         # ttk.Button(self.topFrame, text="textOut", command=self.image_control.test_output).grid(row=1, column=1, ipadx=0, ipady=10)
 
-    def rotate_image(self):
+    def rotate_the_image(self):
         if self.image_selection is not None:
             self.image_selection.clean_up()
         self.pixel_works.unbind_select_boxes()

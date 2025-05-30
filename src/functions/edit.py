@@ -23,11 +23,25 @@ class Edit:
         self.edit_menu.add_separator()
         self.edit_menu.add_command(label="grayscale", command=self.grayscale)
         self.edit_menu.add_command(label="BGR to HSV", command=self.bgr2hsv)
+        self.edit_menu.add_command(label="To JET colormap", command=self.jet)
         self.edit_menu.add_separator()
         self.edit_menu.add_command(label="Red Channel", command=self.red_channel)
         self.edit_menu.add_command(label="Green Channel", command=self.green_channel)
         self.edit_menu.add_command(label="Blue Channel", command=self.blue_channel)
         
+    def jet(self):
+        try:
+            img = self.image_control.get_image()
+            if img.ndim == 2:
+                jet_image = cv2.applyColorMap(img, cv2.COLORMAP_JET)
+                self.image_control.load_image(jet_image)
+            else:
+                raise KeyError("Image needs to be gray scale. 🙂")
+        except KeyError as e:
+            self.message.show("Caution", e)
+        except Exception as e:
+            self.message.show("Error", e)
+
     def fit_to_screen(self):
         try:
             img = self.image_control.get_image()
@@ -88,11 +102,14 @@ class Edit:
     def grayscale(self):
         try:
             img = self.image_control.get_image()
-            if img is not None:
-                gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                self.image_control.load_image(gray_image)
-            else:
-                raise ValueError("😟 The image is not loaded. Please load an image before processing.")
+            if img.ndim == 2:
+                self.message.show("Caution", "Already Gray scale image. 😅")
+            else:    
+                if img is not None:
+                    gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    self.image_control.load_image(gray_image)
+                else:
+                    raise ValueError("😟 The image is not loaded. Please load an image before processing.")
         except Exception as e:
             print(e)
             self.message.show("Error", e)
@@ -100,11 +117,15 @@ class Edit:
     def bgr2hsv(self):
         try:
             img = self.image_control.get_image()
-            if img is not None:
-                hsvimage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-                self.image_control.load_image(hsvimage)
+            if  img.ndim == 2:
+                print("grey scale")
+                self.message.show("Caution", "Gray scale image, no BGR found on image 🫤")
             else:
-                raise ValueError("😟 The image is not loaded. Please load an image before processing.")
+                if img is not None:
+                    hsvimage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+                    self.image_control.load_image(hsvimage)
+                else:
+                    raise ValueError("😟 The image is not loaded. Please load an image before processing.")
         except Exception as e:
             print(e)
             self.message.show("Error", e)
