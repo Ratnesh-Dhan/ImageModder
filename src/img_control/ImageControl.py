@@ -4,10 +4,10 @@ import tkinter as tk
 from threading import Timer
 from tkinter import filedialog
 from PIL import Image, ImageTk
-import imageio.v3 as imageio
+# import imageio.v3 as imageio
 from src.utils.customErrorBox import CustomErrorBox
 from src.utils.constants import bottom_bg_color
-# from matplotlib import pyplot as imageio
+from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 
@@ -112,7 +112,6 @@ class ImageControl:
         if current_time - self.last_wheel_time < 200: # 100ms threshold
             return
         self.last_wheel_time = current_time
-        # print("scaling: ", self.height_scale)
         # respond to Linux or Windows wheel event
         try:
             if self.zoom_timer is not None:
@@ -222,7 +221,10 @@ class ImageControl:
                 self.last=-1
                 self.first=0
                 self.img_state[:] = [None] * len(self.img_state)
-                image = imageio.imread(file_path)   
+                # image = imageio.imread(file_path)   
+                image = plt.imread(file_path)
+                if image.dtype == "float32":
+                    image = (image * 255).astype(np.uint8)
                 self.load_image(image)
             except Exception as e:
                 self.custom_error.show("Error", f"faild to open image: {e}")
