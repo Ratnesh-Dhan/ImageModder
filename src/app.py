@@ -2,7 +2,6 @@ import sys
 import os
 import tkinter as tk
 from tkinter import ttk
-#from src.utils.image_utils import ImageViewer
 from src.img_control.ImageControl import ImageControl
 from src.img_control.ImageDrag import ImageDrag
 from src.img_control.ImageSelection import ImageSelection
