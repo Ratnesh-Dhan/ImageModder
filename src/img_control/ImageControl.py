@@ -288,7 +288,7 @@ class ImageControl:
                 # Save the image to the selected location
                 print(file_path)
                 if file_path:
-                    imageio.imwrite(file_path, self.img_state[self.last])
+                    plt.imsave(file_path, self.img_state[self.last])
                     self.custom_error.show("Success", "Saved! 🎉")
         except Exception as e:
             self.custom_error.show("Error", e)
