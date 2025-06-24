@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from src.utils.customErrorBox import CustomErrorBox
+import cv2
 
 class Utils:
     def __init__(self, root):
@@ -57,6 +58,24 @@ class Utils:
                     raise Exception(f"{val} option does not exists.")
                 plt.show()
                 
+        except Exception as e:
+            self.message.show("Error", e)
+
+    def fit_to_screen(self, image_control, bottomFrame):
+        try:
+            img = image_control.get_image()
+            image_control.reset_scale()
+            if img is not None:
+                screen_height = bottomFrame.winfo_height()
+                print("Screen height: ", screen_height)
+                print("Image height: ", img.shape[0])
+                ratio = screen_height / img.shape[0]
+                new_image = cv2.resize(img, (int(img.shape[1] * ratio), int(img.shape[0] * ratio)))
+                image_control.load_image(new_image)
+            else:
+                raise ValueError("The image is not loaded. Please load an image before processing.")
+        except ValueError as e:
+            self.message.show("Error", e)
         except Exception as e:
             self.message.show("Error", e)
             

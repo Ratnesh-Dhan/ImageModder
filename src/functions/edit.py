@@ -2,6 +2,7 @@
 import tkinter as tk
 from src.utils.constants import menu_bg
 from src.utils.customErrorBox import CustomErrorBox
+from src.utils.utils import Utils
 import cv2
 
 class Edit:
@@ -10,6 +11,7 @@ class Edit:
         self.bottomFrame = bottomFrame
         self.image_control = image_control
         self.message = CustomErrorBox(root)
+        self.utils = Utils(root)
         
         self.edit_menu = tk.Menu(menubar, tearoff=0)
         self.edit_menu.configure(bg=menu_bg, font=menu_font)
@@ -43,22 +45,7 @@ class Edit:
             self.message.show("Error", e)
 
     def fit_to_screen(self):
-        try:
-            img = self.image_control.get_image()
-            if img is not None:
-                screen_height = self.bottomFrame.winfo_height()
-                print("Screen height: ", screen_height)
-                print("Image height: ", img.shape[0])
-                ratio = screen_height / img.shape[0]
-                new_image = cv2.resize(img, (int(img.shape[1] * ratio), int(img.shape[0] * ratio)))
-                self.image_control.load_image(new_image)
-            else:
-                raise ValueError("The image is not loaded. Please load an image before processing.")
-        except ValueError as e:
-            self.message.show("Error", e)
-        except Exception as e:
-            self.message.show("Error", e)
-                
+        self.utils.fit_to_screen(self.image_control, self.bottomFrame)        
 
     def red_channel(self):
         try:        

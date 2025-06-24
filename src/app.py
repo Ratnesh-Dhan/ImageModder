@@ -55,7 +55,7 @@ class App:
         self.image_selection = None
         
         #Chronological order
-        self.file_operation = File(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
+        self.file_operation = File(self.root, self.topFrame, self.bottomFrame, self.image_control, self.pixel_works, menubar, menu_font)
         self.edit_operation = Edit(self.topFrame, self.bottomFrame, self.image_control, menubar, menu_font)
         self.custom_filters = CustomFilters(self.topFrame, self.image_control, menubar, custom_font, label_font, button_font, menu_font)
         self.graphs = Graphs(self.topFrame, self.image_control, menubar, menu_font)

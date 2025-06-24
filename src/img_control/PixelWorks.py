@@ -74,6 +74,7 @@ class PixelWorks:
     def unbind_select_boxes(self):
         try:
             self.image_control.canvas.unbind("<Button-1>")
+            self.count = 0
             self.toggle = False
         except Exception as e:
             self.custom_error.show("Error", str(e))
@@ -113,7 +114,8 @@ class PixelWorks:
         except Exception as e:
             self.custom_error.show("Error", str(e))
 
-    def count_reset(self):
+    def reset_all(self):
         self.count = 0
+        self.unbind_select_boxes()
 
 

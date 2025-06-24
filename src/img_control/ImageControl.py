@@ -149,7 +149,7 @@ class ImageControl:
                 
         except Exception as e:
             print(f"error on circular queue :{e}")       
-            
+
     def load_image(self, image):
         self.canvas.pack(fill=tk.BOTH, expand=True)         
         try:
