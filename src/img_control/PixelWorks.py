@@ -16,6 +16,7 @@ class PixelWorks:
         self.custom_error = CustomErrorBox(self.root)
         self.custom_font = custom_font
         self.window_form = None
+        self.copy_image = None
 
     def toggle_select_boxes(self):
         try:
@@ -95,6 +96,11 @@ class PixelWorks:
             output_dir = "squares"
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
+            # Creating save folder for each individual class
+            output_dir = os.path.join(output_dir, self.name)
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+
             save_location = os.path.join(output_dir, f"{self.name}_{self.count}.png")
             if not os.path.exists(save_location):
                 cv2.imwrite(save_location, cropped_img)
@@ -107,5 +113,7 @@ class PixelWorks:
         except Exception as e:
             self.custom_error.show("Error", str(e))
 
+    def count_reset(self):
+        self.count = 0
 
 
